@@ -2,34 +2,9 @@
 <script>
 import logo from '@/assets/logo/logo.svg'
 import ellipse from '@/assets/elements/ellipse.svg'
-import { ref } from 'vue'
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
-import { useRouter } from 'vue-router'
 
 export default {
   name: 'SignInApp',
-  setup() {
-    const email = ref('')
-    const password = ref('')
-    const router = useRouter()
-
-    const register = () => {
-      createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-        .then(() => {
-          console.log('Успешная регистрация!')
-          router.push('/home')
-        })
-        .catch((error) => {
-          console.log('Ошибка регистрации: ', error)
-        })
-    }
-
-    return {
-      email,
-      password,
-      register,
-    }
-  },
   data() {
     return {
       logoSignInData: {
@@ -56,8 +31,8 @@ export default {
     },
   },
   methods: {
-    goToNewPage(page) {
-      this.$router.push({ name: page })
+    goToHome() {
+      this.$router.push('/home')
     },
   },
 }
@@ -93,7 +68,7 @@ export default {
       <span class="signin-text">{{ formSignInData.password }}</span>
       <input class="signin-input" type="password" v-model="password" />
       <span class="signin-forgot">{{ formSignInData.forgot_password }}</span>
-      <button class="click" id="signin-button" @click="register">
+      <button class="click" id="signin-button" @click="goToHome">
         {{ formSignInData.sign_in }}
       </button>
     </div>
