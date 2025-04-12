@@ -1,10 +1,53 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script>
+import { ref } from 'vue'
+import { auth } from '@/firebase'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { useRouter } from 'vue-router'
 import logo from '@/assets/logo/logo.svg'
 import ellipse from '@/assets/elements/ellipse.svg'
 
 export default {
   name: 'SignInApp',
+  setup() {
+    const email = ref('')
+    const password = ref('')
+    const router = useRouter()
+    const errorMessage = ref('')
+
+    const signIn = async () => {
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
+        console.log('Успешный вход:', userCredential.user)
+        router.push('/home')
+      } catch (error) {
+        console.error('Ошибка входа:', error)
+        switch (error.code) {
+          case 'auth/invalid-email':
+            errorMessage.value = 'Некорректный email'
+            break
+          case 'auth/user-disabled':
+            errorMessage.value = 'Пользователь заблокирован'
+            break
+          case 'auth/user-not-found':
+            errorMessage.value = 'Пользователь не найден'
+            break
+          case 'auth/wrong-password':
+            errorMessage.value = 'Неверный пароль'
+            break
+          default:
+            errorMessage.value = 'Ошибка при входе. Попробуйте снова.'
+        }
+      }
+    }
+
+    return {
+      email,
+      password,
+      errorMessage,
+      signIn,
+    }
+  },
   data() {
     return {
       logoSignInData: {
@@ -31,8 +74,11 @@ export default {
     },
   },
   methods: {
-    goToHome() {
-      this.$router.push('/home')
+    resetPassword() {
+      alert('Функция восстановления пароля будет реализована позже')
+    },
+    resetEmail() {
+      alert('Функция восстановления email будет реализована позже')
     },
   },
 }
@@ -62,13 +108,24 @@ export default {
   <div class="signin-container">
     <div class="signin-form">
       <span id="signin-header">{{ formSignInData.header }}</span>
+
       <span class="signin-text">{{ formSignInData.email }}</span>
-      <input class="signin-input" type="text" v-model="email" />
-      <span class="signin-forgot">{{ formSignInData.forgot_email }}</span>
+      <input class="signin-input" type="email" v-model="email" @keyup.enter="signIn" />
+      <span class="signin-forgot click" @click="resetEmail">
+        {{ formSignInData.forgot_email }}
+      </span>
+
       <span class="signin-text">{{ formSignInData.password }}</span>
-      <input class="signin-input" type="password" v-model="password" />
-      <span class="signin-forgot">{{ formSignInData.forgot_password }}</span>
-      <button class="click" id="signin-button" @click="goToHome">
+      <input class="signin-input" type="password" v-model="password" @keyup.enter="signIn" />
+      <span class="signin-forgot click" @click="resetPassword">
+        {{ formSignInData.forgot_password }}
+      </span>
+
+      <div v-if="errorMessage" class="signin-error">
+        {{ errorMessage }}
+      </div>
+
+      <button class="click" id="signin-button" @click="signIn" :disabled="!email || !password">
         {{ formSignInData.sign_in }}
       </button>
     </div>

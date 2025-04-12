@@ -1,5 +1,9 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script>
+import { ref } from 'vue'
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import { useRouter } from 'vue-router'
+import { auth } from '@/firebase'
 import logo from '@/assets/logo/logo.svg'
 import top_ellipse from '@/assets/elements/top_ellipse.svg'
 import bottom_ellipse from '@/assets/elements/bottom_ellipse.svg'
@@ -7,6 +11,56 @@ import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'SignUpApp',
+  setup() {
+    const surname = ref('')
+    const name = ref('')
+    const patronymic = ref('')
+    const dateOfBirth = ref('')
+    const email = ref('')
+    const password = ref('')
+    const router = useRouter()
+
+    const register = async () => {
+      try {
+        const auth = getAuth()
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email.value,
+          password.value,
+        )
+        const user = userCredential.user
+        console.log('Пользователь успешно зарегистрирован:', user)
+        router.push('/home')
+      } catch (error) {
+        console.error('Ошибка регистрации:', error)
+        let errorMessage = 'Произошла ошибка при регистрации'
+        switch (error.code) {
+          case 'auth/email-already-in-use':
+            errorMessage = 'Этот email уже используется'
+            break
+          case 'auth/invalid-email':
+            errorMessage = 'Некорректный email'
+            break
+          case 'auth/weak-password':
+            errorMessage = 'Пароль должен содержать минимум 6 символов'
+            break
+          default:
+            errorMessage = error.message
+        }
+        alert(errorMessage)
+      }
+    }
+
+    return {
+      surname,
+      name,
+      patronymic,
+      dateOfBirth,
+      email,
+      password,
+      register,
+    }
+  },
   data() {
     return {
       logoSignUpData: {
@@ -74,9 +128,34 @@ export default {
       }
     },
     scrollToTariff() {
+      if (!this.validateForm()) {
+        return
+      }
       const tariffSection = document.querySelector('.signup-tariff-container')
       if (tariffSection) {
         tariffSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    },
+    validateForm() {
+      if (!this.surname || !this.name || !this.email || !this.password) {
+        alert('Пожалуйста, заполните все обязательные поля')
+        return false
+      }
+      if (this.password.length < 6) {
+        alert('Пароль должен содержать минимум 6 символов')
+        return false
+      }
+      return true
+    },
+    async completeRegistration() {
+      if (!this.validateForm()) {
+        return
+      }
+      try {
+        await this.register()
+        this.goToNewPage('Home')
+      } catch (error) {
+        console.error('Registration failed:', error)
       }
     },
     goToNewPage(page) {
@@ -109,33 +188,33 @@ export default {
             <div class="signup-input-row">
               <div class="signup-input-group">
                 <span class="signup-text">{{ formSignUpData.surname }}</span>
-                <input class="signup-input" type="text" />
+                <input class="signup-input" type="text" v-model="surname" required />
               </div>
               <div class="signup-input-group">
                 <span class="signup-text">{{ formSignUpData.name }}</span>
-                <input class="signup-input" type="text" />
+                <input class="signup-input" type="text" v-model="name" required />
               </div>
             </div>
 
             <div class="signup-input-row">
               <div class="signup-input-group">
                 <span class="signup-text">{{ formSignUpData.patronymic }}</span>
-                <input class="signup-input" type="text" />
+                <input class="signup-input" type="text" v-model="patronymic" />
               </div>
               <div class="signup-input-group">
                 <span class="signup-text">{{ formSignUpData.birth_date }}</span>
-                <input class="signup-input" type="date" />
+                <input class="signup-input" type="date" v-model="dateOfBirth" />
               </div>
             </div>
 
             <div class="signup-input-row">
               <div class="signup-input-group">
                 <span class="signup-text">{{ formSignUpData.email }}</span>
-                <input class="signup-input" type="email" />
+                <input class="signup-input" type="email" v-model="email" required />
               </div>
               <div class="signup-input-group">
                 <span class="signup-text">{{ formSignUpData.password }}</span>
-                <input class="signup-input" type="password" />
+                <input class="signup-input" type="password" v-model="password" required />
               </div>
             </div>
 
@@ -186,7 +265,7 @@ export default {
                 </div>
               </div>
             </div>
-            <button class="click" id="signup-checkout" @click="goToNewPage('Home')">
+            <button class="click" id="signup-checkout" @click="completeRegistration">
               {{ formSignUpData.checkout }}
             </button>
           </div>
