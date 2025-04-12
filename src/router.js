@@ -4,10 +4,8 @@ import SignUpApp from './components/sign_up/SignUp.vue'
 import HomeApp from './components/home/Home.vue'
 import AccountApp from './components/account/Account.vue'
 import HelpApp from './components/help/Help.vue'
-import MainPage from './components/page/MainPage.vue'
 
 const routes = [
-  { path: '/', name: 'MainPage', component: MainPage },
   { path: '/sign_in', name: 'SignIn', component: SignInApp },
   { path: '/sign_up', name: 'SignUp', component: SignUpApp },
   { path: '/home', name: 'Home', component: HomeApp },

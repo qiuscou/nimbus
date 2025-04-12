@@ -3,6 +3,7 @@
 import { ref } from 'vue'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import { useRouter } from 'vue-router'
+import { auth } from '@/firebase'
 import logo from '@/assets/logo/logo.svg'
 import top_ellipse from '@/assets/elements/top_ellipse.svg'
 import bottom_ellipse from '@/assets/elements/bottom_ellipse.svg'
