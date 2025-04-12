@@ -3,6 +3,6 @@ import tariff from './tariff'
 
 export default createStore({
   modules: {
-    tariff
-  }
+    tariff,
+  },
 })

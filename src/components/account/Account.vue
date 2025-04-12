@@ -57,7 +57,9 @@ export default {
       <div class="account-caption-grey">{{ securityPanelAccountData.password }}</div>
       <div class="account-user-data">********</div>
       <div class="account-caption-red click">{{ securityPanelAccountData.delete_account }}</div>
-      <div class="account-description">{{ securityPanelAccountData.delete_account_description }}</div>
+      <div class="account-description">
+        {{ securityPanelAccountData.delete_account_description }}
+      </div>
       <div class="account-caption-red click">{{ securityPanelAccountData.logout }}</div>
       <div class="account-description">{{ securityPanelAccountData.logout_description }}</div>
       <div class="account-buttons-container">
