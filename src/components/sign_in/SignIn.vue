@@ -13,38 +13,46 @@ export default {
     const email = ref('')
     const password = ref('')
     const router = useRouter()
-    const errorMessage = ref('')
 
     const signIn = async () => {
       try {
+        if (!email.value || !password.value) {
+          alert('Пожалуйста, заполните все поля')
+          return
+        }
+
         const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
         console.log('Успешный вход:', userCredential.user)
         router.push('/home')
       } catch (error) {
         console.error('Ошибка входа:', error)
+        let errorMsg = 'Ошибка при входе. Попробуйте снова.'
+
         switch (error.code) {
           case 'auth/invalid-email':
-            errorMessage.value = 'Некорректный email'
+            errorMsg = 'Некорректный email'
             break
           case 'auth/user-disabled':
-            errorMessage.value = 'Пользователь заблокирован'
+            errorMsg = 'Пользователь заблокирован'
             break
           case 'auth/user-not-found':
-            errorMessage.value = 'Пользователь не найден'
+            errorMsg = 'Пользователь не найден'
             break
           case 'auth/wrong-password':
-            errorMessage.value = 'Неверный пароль'
+            errorMsg = 'Неверный пароль'
             break
-          default:
-            errorMessage.value = 'Ошибка при входе. Попробуйте снова.'
+          case 'auth/too-many-requests':
+            errorMsg = 'Слишком много попыток. Попробуйте позже.'
+            break
         }
+
+        alert(errorMsg)
       }
     }
 
     return {
       email,
       password,
-      errorMessage,
       signIn,
     }
   },
@@ -120,10 +128,6 @@ export default {
       <span class="signin-forgot click" @click="resetPassword">
         {{ formSignInData.forgot_password }}
       </span>
-
-      <div v-if="errorMessage" class="signin-error">
-        {{ errorMessage }}
-      </div>
 
       <button class="click" id="signin-button" @click="signIn" :disabled="!email || !password">
         {{ formSignInData.sign_in }}
@@ -204,6 +208,8 @@ body {
 .signin-input {
   box-sizing: border-box;
   border: #d0cece 0.1rem solid;
+  font-family: 'Manrope Light', sans-serif;
+  font-size: 1rem;
   border-radius: 0.85rem;
   padding: 0.75rem;
   width: 22.5rem;

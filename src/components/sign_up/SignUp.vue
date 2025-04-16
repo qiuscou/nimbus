@@ -356,6 +356,7 @@ body {
   box-sizing: border-box;
   border: #d0cece 0.1rem solid;
   font-family: 'Manrope Light', sans-serif;
+  font-size: 1rem;
   border-radius: 0.85rem;
   padding: 0.75rem;
   width: 18.5rem;

@@ -4,6 +4,26 @@ body {
   margin: 0;
 }
 
+html {
+  font-size: 16px;
+}
+
+.click {
+  cursor: pointer;
+}
+
+#logo {
+  display: flex;
+  align-items: center;
+  font-family: 'Circular Std', sans-serif;
+  font-weight: bold;
+  font-size: 2.15rem;
+}
+
+#name {
+  margin-left: 1rem;
+}
+
 @font-face {
   font-family: 'Circular Std';
   src: url('@/assets/fonts/circular_std.ttf') format('truetype');
@@ -51,24 +71,4 @@ body {
   src: url('@/assets/fonts/manrope_thin.otf') format('truetype');
   font-weight: normal;
   font-style: normal;
-}
-
-html {
-  font-size: 16px;
-}
-
-.click {
-  cursor: pointer;
-}
-
-#logo {
-  display: flex;
-  align-items: center;
-  font-family: 'Circular Std', sans-serif;
-  font-weight: bold;
-  font-size: 2.15rem;
-}
-
-#name {
-  margin-left: 1rem;
 }

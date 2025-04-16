@@ -226,7 +226,7 @@ export default {
 <style scoped>
 .home-wrapper {
   display: flex;
-  padding: 1rem;
+  padding: 0.75rem;
   box-sizing: border-box;
   gap: 1rem;
   height: 100%;
