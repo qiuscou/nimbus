@@ -4,6 +4,7 @@
     "dbaeumer.vscode-eslint",
     "EditorConfig.EditorConfig",
     "esbenp.prettier-vscode",
-    "github.copilot-chat"
+    "github.copilot-chat",
+    "github.copilot"
   ]
 }

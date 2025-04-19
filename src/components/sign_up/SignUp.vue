@@ -1,9 +1,11 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script>
 import { ref } from 'vue'
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import { useRouter } from 'vue-router'
-import { auth } from '@/firebase'
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import { doc, setDoc } from 'firebase/firestore'
+import { ref as dbRef, set } from 'firebase/database'
+import { auth, db, database } from '@/firebase'
 import logo from '@/assets/logo/logo.svg'
 import top_ellipse from '@/assets/elements/top_ellipse.svg'
 import bottom_ellipse from '@/assets/elements/bottom_ellipse.svg'
@@ -29,7 +31,40 @@ export default {
           password.value,
         )
         const user = userCredential.user
-        console.log('Пользователь успешно зарегистрирован:', user)
+
+        const userData = {
+          email: email.value,
+          name: name.value,
+          surname: surname.value,
+          patronymic: patronymic.value,
+          dateOfBirth: dateOfBirth.value,
+          createdAt: new Date(),
+          tariff: {
+            gb: selectedGB.value,
+            days: selectedDays.value,
+            price: selectedPrice.value,
+          },
+        }
+
+        await setDoc(doc(db, 'users', user.uid), userData)
+
+        await set(dbRef(database, `users/${user.uid}/profile`), {
+          email: email.value,
+          name: name.value,
+          surname: surname.value,
+          patronymic: patronymic.value,
+          dateOfBirth: dateOfBirth.value,
+          createdAt: new Date().toISOString(),
+        })
+
+        await set(dbRef(database, `users/${user.uid}/tariff`), {
+          gb: selectedGB.value,
+          days: selectedDays.value,
+          price: selectedPrice.value,
+        })
+
+        console.log('Пользователь успешно зарегистрирован!')
+        alert('Регистрация прошла успешно!')
         router.push('/home')
       } catch (error) {
         console.error('Ошибка регистрации:', error)

@@ -1,5 +1,9 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script>
+import { getDoc, doc, setDoc } from 'firebase/firestore'
+import { getAuth } from 'firebase/auth'
+import { db } from '@/firebase'
+
 export default {
   name: 'AccountApp',
   data() {
@@ -26,7 +30,63 @@ export default {
         save: 'Сохранить',
         cancel: 'Отменить',
       },
+      userData: {
+        surname: '',
+        name: '',
+        patronymic: '',
+        dateOfBirth: '',
+        gender: '',
+        country: '',
+        email: '',
+        phone: '',
+        password: '',
+      },
     }
+  },
+  methods: {
+    async fetchUserData() {
+      try {
+        const auth = getAuth()
+        const currentUser = auth.currentUser
+
+        if (!currentUser) {
+          console.error('Пользователь не авторизован')
+          return
+        }
+
+        const uid = currentUser.uid
+        console.log('UID текущего пользователя:', uid)
+
+        const docRef = doc(db, 'users', uid)
+        const docSnap = await getDoc(docRef)
+
+        if (docSnap.exists()) {
+          console.log('Данные из Firestore:', docSnap.data())
+          this.userData = docSnap.data()
+        } else {
+          console.log('Документ не найден. Создаем новый документ...')
+          const defaultData = {
+            surname: '',
+            name: '',
+            patronymic: '',
+            dateOfBirth: '',
+            gender: '',
+            country: '',
+            email: currentUser.email || '',
+            phone: '',
+            password: '',
+          }
+          await setDoc(docRef, defaultData)
+          this.userData = defaultData
+          console.log('Документ создан с данными по умолчанию:', defaultData)
+        }
+      } catch (error) {
+        console.error('Ошибка при получении данных:', error)
+      }
+    },
+  },
+  mounted() {
+    this.fetchUserData()
   },
 }
 </script>
@@ -36,13 +96,15 @@ export default {
     <div class="account-personal-data">
       <div class="account-header">{{ personalDataPanelAccountData.header }}</div>
       <div class="account-caption-grey">{{ personalDataPanelAccountData.snp }}</div>
-      <div class="account-user-data">Краснов Игорь Алексеевич</div>
+      <div class="account-user-data">
+        {{ userData.surname }} {{ userData.name }} {{ userData.patronymic }}
+      </div>
       <div class="account-caption-grey">{{ personalDataPanelAccountData.birth_date }}</div>
-      <div class="account-user-data">18 января 2005</div>
+      <div class="account-user-data">{{ userData.dateOfBirth }}</div>
       <div class="account-caption-grey">{{ personalDataPanelAccountData.gender }}</div>
-      <div class="account-user-data">Мужской</div>
+      <div class="account-user-data">{{ userData.gender }}</div>
       <div class="account-caption-grey">{{ personalDataPanelAccountData.country }}</div>
-      <div class="account-user-data">Россия</div>
+      <div class="account-user-data">{{ userData.country }}</div>
       <div class="account-buttons-container">
         <button class="account-button-blue click">{{ buttonAccountData.save }}</button>
         <button class="account-button-grey click">{{ buttonAccountData.cancel }}</button>
@@ -51,11 +113,11 @@ export default {
     <div class="account-security">
       <div class="account-header">{{ securityPanelAccountData.header }}</div>
       <div class="account-caption-grey">{{ securityPanelAccountData.email }}</div>
-      <div class="account-user-data">krasnov_ia@mail.ru</div>
+      <div class="account-user-data">{{ userData.email }}</div>
       <div class="account-caption-grey">{{ securityPanelAccountData.phone }}</div>
-      <div class="account-user-data">+7 (932) 470 ** - **</div>
+      <div class="account-user-data">{{ userData.phone }}</div>
       <div class="account-caption-grey">{{ securityPanelAccountData.password }}</div>
-      <div class="account-user-data">********</div>
+      <div class="account-user-data">{{ userData.password }}</div>
       <div class="account-caption-red click">{{ securityPanelAccountData.delete_account }}</div>
       <div class="account-description">
         {{ securityPanelAccountData.delete_account_description }}
@@ -116,7 +178,7 @@ export default {
 }
 
 .account-panel {
-  padding: 2rem;
+  padding: 1.75rem;
   display: flex;
   gap: 2rem;
 }
