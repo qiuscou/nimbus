@@ -1,0 +1,31 @@
+.advantages-header-container {
+  display: flex;
+  justify-content: center;
+}
+
+.advantages-points-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-inline: 25rem;
+  margin-top: 3rem;
+}
+
+.advantages-highlight {
+  color: #197ccd;
+  font-weight: bold;
+}
+
+#advantages-header {
+  font-family: 'Manrope SemiBold', sans-serif;
+  font-weight: bold;
+  font-size: 2.05rem;
+}
+
+#advantages-available,
+#advantages-safely,
+#advantages-just {
+  font-family: 'Manrope Light', sans-serif;
+  font-weight: normal;
+  font-size: 1.45rem;
+}

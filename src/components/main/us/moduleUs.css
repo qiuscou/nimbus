@@ -1,0 +1,42 @@
+.us-header-container {
+  display: flex;
+  justify-content: center;
+}
+
+.us-subheading-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  margin-inline: 25rem;
+}
+
+.us-subheading-word {
+  color: #197ccd;
+  font-weight: bold;
+  font-size: 1.45rem;
+}
+
+.us-mission-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  margin-inline: 25rem;
+}
+
+#us-header {
+  font-family: 'Manrope SemiBold', sans-serif;
+  font-weight: bold;
+  font-size: 2.05rem;
+}
+
+#us-subheading {
+  font-family: 'Manrope Light', sans-serif;
+  font-weight: normal;
+  font-size: 1.45rem;
+}
+
+#us-mission {
+  font-family: 'Manrope Light', sans-serif;
+  font-weight: normal;
+  font-size: 1.45rem;
+}

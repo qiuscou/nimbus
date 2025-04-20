@@ -1,63 +1,20 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script>
-import { ref } from 'vue'
-import { auth } from '@/firebase'
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import { useRouter } from 'vue-router'
+import { useSignIn } from './useSignIn'
 import logo from '@/assets/logo/logo.svg'
 import ellipse from '@/assets/elements/ellipse.svg'
 
 export default {
   name: 'SignInApp',
   setup() {
-    const email = ref('')
-    const password = ref('')
-    const router = useRouter()
-
-    const signIn = async () => {
-      try {
-        if (!email.value || !password.value) {
-          alert('Пожалуйста, заполните все поля')
-          return
-        }
-
-        const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
-        console.log('Успешный вход:', userCredential.user)
-        router.push('/home')
-      } catch (error) {
-        console.error('Ошибка входа:', error)
-        let errorMsg = 'Ошибка при входе. Попробуйте снова.'
-
-        switch (error.code) {
-          case 'auth/invalid-email':
-            errorMsg = 'Некорректный email'
-            break
-          case 'auth/user-disabled':
-            errorMsg = 'Пользователь заблокирован'
-            break
-          case 'auth/user-not-found':
-            errorMsg = 'Пользователь не найден'
-            break
-          case 'auth/wrong-password':
-            errorMsg = 'Неверный пароль'
-            break
-          case 'auth/too-many-requests':
-            errorMsg = 'Слишком много попыток. Попробуйте позже.'
-            break
-        }
-
-        alert(errorMsg)
-      }
-    }
+    const { email, password, signIn, resetPassword, resetEmail } = useSignIn()
 
     return {
       email,
       password,
       signIn,
-    }
-  },
-  data() {
-    return {
+      resetPassword,
+      resetEmail,
       logoSignInData: {
         logo: logo,
         title: 'nimbus',
@@ -73,21 +30,7 @@ export default {
       backgroundSignInData: {
         ellipse: ellipse,
       },
-      isSignInPage: this.$route.path === '/',
     }
-  },
-  watch: {
-    $route(to) {
-      this.isSignInPage = to.path === '/'
-    },
-  },
-  methods: {
-    resetPassword() {
-      alert('Функция восстановления пароля будет реализована позже')
-    },
-    resetEmail() {
-      alert('Функция восстановления email будет реализована позже')
-    },
   },
 }
 </script>
@@ -136,132 +79,4 @@ export default {
   </div>
 </template>
 
-<style scoped>
-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  margin: 0;
-  font-family: 'Manrope', sans-serif;
-  background-color: #f4f4f4;
-  overflow: hidden;
-}
-
-.signin-header {
-  position: absolute;
-  top: 1.5rem;
-  left: 4rem;
-}
-
-.signin-background-container {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: -1;
-}
-
-.signin-ellipse {
-  position: absolute;
-  width: 60rem;
-  height: 60rem;
-}
-
-.signin-ellipse-top {
-  top: 0;
-  right: 0;
-  transform: translate(1%, -60%);
-}
-
-.signin-ellipse-bottom {
-  bottom: 0;
-  left: 0;
-  transform: translate(-1%, 60%);
-}
-
-.signin-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.signin-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-  border: #d0cece 0.1rem solid;
-  background-color: #ffffff;
-  border-radius: 1rem;
-  padding: 3rem 2rem;
-  width: 35rem;
-  height: 31rem;
-}
-
-.signin-input {
-  box-sizing: border-box;
-  border: #d0cece 0.1rem solid;
-  font-family: 'Manrope Light', sans-serif;
-  font-size: 1rem;
-  border-radius: 0.85rem;
-  padding: 0.75rem;
-  width: 22.5rem;
-  height: 3.35rem;
-  margin: 0.5rem 0;
-}
-
-.signin-text {
-  align-self: flex-start;
-  font-weight: normal;
-  font-family: 'Manrope Light', sans-serif;
-  font-size: 1.05rem;
-  margin-left: 4rem;
-}
-
-.signin-forgot {
-  align-self: flex-end;
-  margin-right: 4.25rem;
-  font-size: 0.85rem;
-  font-family: 'Manrope Light', sans-serif;
-  color: #197ccd;
-  cursor: pointer;
-}
-
-#signin-header {
-  font-family: 'Manrope SemiBold', sans-serif;
-  font-weight: bold;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-}
-
-#signin-button {
-  font-family: 'Manrope SemiBold', sans-serif;
-  font-size: 1.15rem;
-  color: #ffffff;
-  background-color: #197ccd;
-  border: none;
-  border-radius: 0.85rem;
-  width: 22.5rem;
-  height: 3.35rem;
-  margin-top: 1.5rem;
-}
-
-#logo {
-  display: flex;
-  align-items: center;
-  font-family: 'Circular Std', sans-serif;
-  font-weight: bold;
-  font-size: 2.15rem;
-}
-
-#name {
-  margin-left: 1rem;
-}
-</style>
+<style src="./moduleSignIn.css" scoped></style>

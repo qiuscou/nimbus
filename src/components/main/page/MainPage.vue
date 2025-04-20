@@ -1,28 +1,23 @@
-<!-- src/components/MainPage.vue -->
+<!-- eslint-disable vue/multi-word-component-names -->
 <script>
-import MajorApp from '../main/Major.vue'
-import TariffApp from '../main/Tariff.vue'
-import UsApp from '../main/Us.vue'
-import AdvantagesApp from '../main/Advantages.vue'
-import QuestionsApp from '../main/Questions.vue'
+import { useMainPage } from './useMainPage'
+import MajorApp from '../major/Major.vue'
+import TariffApp from '../tariff/Tariff.vue'
+import UsApp from '../us/Us.vue'
+import AdvantagesApp from '../advantages/Advantages.vue'
+import QuestionsApp from '../questions/Questions.vue'
 
 export default {
+  name: 'MainPageApp',
   components: { MajorApp, TariffApp, UsApp, AdvantagesApp, QuestionsApp },
-  data() {
+  setup() {
+    const { sectionsMajorData, sliderTariffData, goToNewPage } = useMainPage()
+
     return {
-      sectionsMajorData: {
-        sign_up: 'Регистрация',
-        sign_in: 'Войти',
-      },
-      sliderTariffData: {
-        checkout: 'Оформить',
-      },
+      sectionsMajorData,
+      sliderTariffData,
+      goToNewPage,
     }
-  },
-  methods: {
-    goToNewPage(routeName) {
-      this.$router.push({ name: routeName })
-    },
   },
 }
 </script>
@@ -62,33 +57,4 @@ export default {
   </div>
 </template>
 
-<style scoped>
-.app-main {
-  position: relative;
-  overflow: hidden;
-}
-
-#app-tariff {
-  margin-top: 37.5rem;
-  position: relative;
-  z-index: 1;
-}
-
-#app-us {
-  margin-top: 7.5rem;
-  margin-bottom: 7.5rem;
-  position: relative;
-}
-
-#app-advantages {
-  margin-top: 7.5rem;
-  margin-bottom: 7.5rem;
-  position: relative;
-}
-
-#app-questions {
-  margin-top: 7.5rem;
-  margin-bottom: 7.5rem;
-  position: relative;
-}
-</style>
+<style src="./moduleMainPage.css" scoped></style>
