@@ -2,6 +2,8 @@
 <script>
 import { onMounted } from 'vue'
 import { useAccount } from './useAccount'
+import { getAuth, signOut } from 'firebase/auth'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'AccountApp',
@@ -14,6 +16,18 @@ export default {
       fetchUserData,
     } = useAccount()
 
+    const auth = getAuth()
+    const router = useRouter()
+
+    const handleLogout = async () => {
+      try {
+        await signOut(auth)
+        router.push('/')
+      } catch (error) {
+        console.error('Ошибка при выходе:', error)
+      }
+    }
+
     onMounted(() => {
       fetchUserData()
     })
@@ -23,6 +37,7 @@ export default {
       personalDataPanelAccountData,
       securityPanelAccountData,
       buttonAccountData,
+      handleLogout,
     }
   },
 }
@@ -65,7 +80,9 @@ export default {
         {{ securityPanelAccountData.delete_account_description }}
       </div>
 
-      <div class="account-caption-red click">{{ securityPanelAccountData.logout }}</div>
+      <div class="account-caption-red click" @click="handleLogout">
+        {{ securityPanelAccountData.logout }}
+      </div>
       <div class="account-description">{{ securityPanelAccountData.logout_description }}</div>
     </div>
   </div>
