@@ -30,8 +30,7 @@ export function useAccount() {
     phone: 'Номер телефона',
     password: 'Пароль',
     delete_account: 'Удалить аккаунт',
-    delete_account_description:
-      'После удаления вы сможете восстановить\nаккаунт в течение 30 дней.',
+    delete_account_description: 'После удаления все ваши данные будут\n полностью удалены.',
     logout: 'Выйти из аккаунта',
     logout_description: 'Рекомендуется после использования на\nчужом устройстве.',
   }
