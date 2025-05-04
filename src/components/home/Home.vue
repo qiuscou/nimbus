@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <script>
 import logo from '@/assets/logo/logo.svg'
 import magnifier from '@/assets/elements/magnifier.svg'
@@ -19,7 +18,27 @@ import { useHome } from './useHome'
 export default {
   name: 'HomeApp',
   setup() {
-    const { activeButton, selectedFileType, isHomePage, goToNewPage, goToTariff } = useHome()
+    const {
+      activeButton,
+      selectedFileType,
+      isHomePage,
+      goToNewPage,
+      goToTariff,
+      openFileDialog,
+      handleFileSelection,
+      uploadedFiles,
+      isDragging,
+      handleDrop,
+      handleDragOver,
+      handleDragLeave,
+      handleFileDragStart,
+      handleFileDragOver,
+      handleFileDragLeave,
+      handleFileDrop,
+      handleEmptyAreaDrop,
+      getFileIcon,
+      formatFileSize,
+    } = useHome()
 
     return {
       logo,
@@ -28,6 +47,20 @@ export default {
       isHomePage,
       goToNewPage,
       goToTariff,
+      openFileDialog,
+      handleFileSelection,
+      uploadedFiles,
+      isDragging,
+      handleDrop,
+      handleDragOver,
+      handleDragLeave,
+      handleFileDragStart,
+      handleFileDragOver,
+      handleFileDragLeave,
+      handleFileDrop,
+      handleEmptyAreaDrop,
+      getFileIcon,
+      formatFileSize,
       searchPanelHomeData: {
         magnifier,
         search: 'Поиск по облаку',
@@ -45,6 +78,7 @@ export default {
         account: 'Аккаунт',
         help: 'Помощь',
         tariff: 'Тариф',
+        drag_and_drop_the_files_here: 'Перетащите файлы сюда',
         chrervon_right,
         image,
         heart,
@@ -192,9 +226,18 @@ export default {
           </button>
         </div>
       </div>
-      <div class="home-panel-storage">
+
+      <div
+        class="home-panel-storage"
+        :class="{ dragover: isDragging }"
+        @dragover="handleDragOver"
+        @dragleave="handleDragLeave"
+        @drop.prevent="handleEmptyAreaDrop"
+      >
+        <input type="file" multiple @change="handleFileSelection" hidden />
+
         <div class="home-blue-buttons-container">
-          <div class="home-blue-button" id="home-download-button">
+          <div class="home-blue-button" id="home-download-button" @click="openFileDialog">
             <img :src="blueButtonsData.cloud_upload" alt="download" class="home-icon" />
           </div>
           <div class="home-blue-button" id="home-create-button">
@@ -204,8 +247,65 @@ export default {
             <img :src="blueButtonsData.external_link" alt="share" class="home-icon" />
           </div>
         </div>
+
+        <div
+          class="home-files-container"
+          @dragover="handleDragOver"
+          @dragleave="handleDragLeave"
+          @drop.prevent="handleEmptyAreaDrop"
+        >
+          <div
+            class="home-uploaded-files-wrapper"
+            v-if="uploadedFiles.length"
+            @dragover="handleDragOver"
+            @dragleave="handleDragLeave"
+            @drop.prevent="handleEmptyAreaDrop"
+          >
+            <div
+              v-for="(file, index) in uploadedFiles"
+              :key="index"
+              class="home-uploaded-file"
+              draggable="true"
+              @dragstart="handleFileDragStart($event, index)"
+              @dragover.prevent="handleFileDragOver($event, index)"
+              @dragleave="handleFileDragLeave($event, index)"
+              @drop="handleFileDrop($event, index)"
+            >
+              <div class="home-uploaded-file-handle"></div>
+              <img
+                v-if="file.preview"
+                :src="file.preview"
+                class="home-uploaded-file-icon"
+                alt="File Preview"
+              />
+              <img
+                v-else
+                :src="getFileIcon(file.type)"
+                class="home-uploaded-file-icon"
+                alt="File Icon"
+              />
+              <span class="home-uploaded-file-name">{{ file.name }}</span>
+            </div>
+          </div>
+          <div
+            v-else
+            class="home-empty-state"
+            @dragover="handleDragOver"
+            @dragleave="handleDragLeave"
+            @drop.prevent="handleEmptyAreaDrop"
+          >
+            <p>{{ stackPanelHomeData.drag_and_drop_the_files_here }}</p>
+          </div>
+        </div>
       </div>
     </div>
+    <input
+      type="file"
+      ref="fileInput"
+      style="display: none"
+      @change="handleFileSelection"
+      multiple
+    />
   </div>
 </template>
 
