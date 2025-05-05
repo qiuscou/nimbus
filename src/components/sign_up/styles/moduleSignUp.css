@@ -9,7 +9,7 @@ body {
   overflow: hidden;
 }
 
-.signup-header {
+.signupHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -32,7 +32,7 @@ body {
   margin-left: 1rem;
 }
 
-.signup-container {
+.signupContainer {
   position: relative;
   display: flex;
   justify-content: center;
@@ -41,7 +41,7 @@ body {
   box-sizing: border-box;
 }
 
-.signup-form-container {
+.signupFormContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,22 +54,22 @@ body {
   margin-bottom: 4.5rem;
 }
 
-.signup-content-container,
-.signup-welcome-container,
-.signup-tariff-container {
+.signupContentContainer,
+.signupWelcomeContainer,
+.signupTariffContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 }
 
-.signup-welcome-container,
-.signup-tariff-container {
+.signupWelcomeContainer,
+.signupTariffContainer {
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
 
-.signup-input {
+.signupInput {
   box-sizing: border-box;
   border: #d0cece 0.1rem solid;
   font-family: 'Manrope Light', sans-serif;
@@ -81,14 +81,14 @@ body {
   margin: 0.5rem 0;
 }
 
-.signup-text {
+.signupText {
   align-self: flex-start;
   font-weight: normal;
   font-size: 1.05rem;
   font-family: 'Manrope Light', sans-serif;
 }
 
-#signup-header {
+#signupHeader {
   font-family: 'Manrope SemiBold', sans-serif;
   font-weight: bold;
   font-size: 2rem;
@@ -110,7 +110,7 @@ button {
   margin-bottom: 2rem;
 }
 
-.signup-input-row {
+.signupInputRow {
   display: flex;
   justify-content: center;
   width: 100%;
@@ -120,18 +120,18 @@ button {
   box-sizing: border-box;
 }
 
-.signup-input-group {
+.signupInputGroup {
   display: flex;
   flex-direction: column;
   width: 18.5rem;
 }
 
-.signup-input-group .signup-text {
+.signupInputGroup .signupText {
   margin-left: 0;
   margin-bottom: 0.5rem;
 }
 
-.signup-tariff-content {
+.signupTariffContent {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -140,14 +140,14 @@ button {
   margin-left: -6.25rem;
 }
 
-.signup-tariff-item {
+.signupTariffItem {
   display: flex;
   flex-direction: column;
   margin: 1rem 0;
   margin-left: 4.05rem;
 }
 
-.signup-tariff-row {
+.signupTariffRow {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -155,7 +155,7 @@ button {
   margin-top: 0.5rem;
 }
 
-.signup-description {
+.signupDescription {
   flex: 1;
   white-space: pre-line;
   color: #d0cece;
@@ -163,43 +163,43 @@ button {
   line-height: 1.5;
 }
 
-.signup-tariff-values {
+.signupTariffValues {
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
   margin-left: auto;
 }
 
-.signup-total {
+.signupTotal {
   font-family: 'Circular Std', sans-serif;
   font-size: 3.75rem;
   font-weight: bold;
 }
 
-.signup-symbol {
+.signupSymbol {
   font-family: 'Circular Std', sans-serif;
   font-size: 1.85rem;
   font-weight: bold;
 }
 
-.signup-tariff-title {
+.signupTariffTitle {
   font-weight: 600;
   font-size: 1.65rem;
 }
 
-.signup-tariff-item:first-child .signup-total,
-.signup-tariff-item:first-child .signup-symbol,
-.signup-tariff-item:nth-child(3) .signup-total,
-.signup-tariff-item:nth-child(3) .signup-symbol {
+.signupTariffItem:first-child .signupTotal,
+.signupTariffItem:first-child .signupSymbol,
+.signupTariffItem:nth-child(3) .signupTotal,
+.signupTariffItem:nth-child(3) .signupSymbol {
   color: #197ccd;
 }
 
-.signup-tariff-item:last-child .signup-total,
-.signup-tariff-item:last-child .signup-symbol {
+.signupTariffItem:last-child .signupTotal,
+.signupTariffItem:last-child .signupSymbol {
   color: #2c2d2e;
 }
 
-.signup-divider {
+.signupDivider {
   height: 0.1rem;
   background-color: #d0cece;
   border-radius: 1rem;
@@ -207,14 +207,14 @@ button {
   margin-left: 4.05rem;
 }
 
-.signup-background-top {
+.signupBackgroundTop {
   position: fixed;
   top: 0;
   right: 0;
   z-index: -1;
 }
 
-.signup-background-bottom {
+.signupBackgroundBottom {
   position: fixed;
   bottom: 0;
   left: 0;

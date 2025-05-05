@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <script>
 import logo from '@/assets/logo/logo.svg'
 import ellipse from '@/assets/elements/ellipse.svg'

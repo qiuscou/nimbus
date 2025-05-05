@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainPage from './components/main/page/MainPage.vue'
-import SignInApp from './components/sign_in/SignIn.vue'
-import SignUpApp from './components/sign_up/SignUp.vue'
+import SignInApp from './components/sign_in/components/SignInApp.vue'
+import SignUpApp from './components/sign_up/components/SignUpApp.vue'
 import HomeApp from './components/home/Home.vue'
-import AccountApp from './components/account/Account.vue'
-import HelpApp from './components/help/Help.vue'
+import AccountApp from './components/account/components/AccountApp.vue'
+import HelpApp from './components/help/components/HelpApp.vue'
 
 const routes = [
   { path: '/', name: 'MainPage', component: MainPage },

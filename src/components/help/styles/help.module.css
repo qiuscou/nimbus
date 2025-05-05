@@ -1,4 +1,4 @@
-.help-content {
+.helpContent {
   display: flex;
   flex-direction: row;
   gap: 1.5rem;
@@ -6,7 +6,7 @@
   padding: 1rem;
 }
 
-.help-section {
+.helpSection {
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
@@ -17,19 +17,19 @@
   border: 1px solid #8c8e93;
 }
 
-.header-caption {
+.headerCaption {
   font-weight: bold;
   font-size: 2rem;
   font-family: 'Manrope SemiBold', sans-serif;
 }
 
-.help-caption {
+.helpCaption {
   font-size: 1.05rem;
   font-family: 'Manrope Light', sans-serif;
   color: #197ccd;
 }
 
-.help-header {
+.helpHeader {
   margin-top: 1.5rem;
   font-weight: bold;
   font-size: 2rem;
@@ -37,13 +37,13 @@
   font-family: 'Manrope SemiBold', sans-serif;
 }
 
-.response-header {
+.responseHeader {
   font-weight: bold;
   font-size: 1.5rem;
   font-family: 'Manrope SemiBold', sans-serif;
 }
 
-.help-response {
+.helpResponse {
   margin: 1rem;
   padding: 1.5rem;
   background-color: #ffffff;
@@ -51,7 +51,7 @@
   border: 1px solid #8c8e93;
 }
 
-.help-response-content {
+.helpResponseContent {
   margin-top: 1rem;
   font-family: 'Manrope Light', sans-serif;
   font-size: 1.05rem;

@@ -10,6 +10,7 @@ export function useSignIn() {
 
   const signIn = async () => {
     try {
+      console.log('Попытка входа с email:', email.value, 'и password:', password.value) // Отладка
       if (!email.value || !password.value) {
         alert('Пожалуйста, заполните все поля')
         return

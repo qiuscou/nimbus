@@ -13,32 +13,31 @@ export function useAccount() {
     country: '',
     email: '',
     phone: '',
-    password: '',
   })
 
-  const personalDataPanelAccountData = {
-    header: 'Личные данные',
-    snp: 'Фамилия, имя, отчество',
+  const personalDataPanelAccountData = ref({
+    header: 'Персональные данные',
+    snp: 'Фамилия, Имя, Отчество',
     birth_date: 'Дата рождения',
     gender: 'Пол',
     country: 'Страна',
-  }
+  })
 
-  const securityPanelAccountData = {
+  const securityPanelAccountData = ref({
     header: 'Безопасность',
     email: 'Email',
-    phone: 'Номер телефона',
+    phone: 'Телефон',
     password: 'Пароль',
     delete_account: 'Удалить аккаунт',
-    delete_account_description: 'После удаления все ваши данные будут\n полностью удалены.',
+    delete_account_description: 'После удаления все ваши данные будут безвозвратно удалены.',
     logout: 'Выйти из аккаунта',
-    logout_description: 'Рекомендуется после использования на\nчужом устройстве.',
-  }
+    logout_description: 'Рекомендуется при использовании чужого устройства.',
+  })
 
-  const buttonAccountData = {
+  const buttonAccountData = ref({
     save: 'Сохранить',
     cancel: 'Отменить',
-  }
+  })
 
   const fetchUserData = async () => {
     try {
@@ -55,11 +54,11 @@ export function useAccount() {
       const docSnap = await getDoc(docRef)
 
       if (docSnap.exists()) {
-        const userDataFromFirestore = docSnap.data()
+        const firestoreData = docSnap.data()
         userData.value = {
           ...userData.value,
-          ...userDataFromFirestore,
-          email: currentUser.email || userDataFromFirestore.email,
+          ...firestoreData,
+          email: currentUser.email || firestoreData.email || '',
         }
 
         if (userData.value.dateOfBirth) {
@@ -73,7 +72,7 @@ export function useAccount() {
         userData.value.email = currentUser.email || ''
       }
     } catch (error) {
-      console.error('Ошибка при получении данных:', error)
+      console.error('Ошибка при получении данных пользователя:', error)
     }
   }
 

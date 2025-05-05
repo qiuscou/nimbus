@@ -1,4 +1,4 @@
-body {
+.signInWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,41 +8,45 @@ body {
   font-family: 'Manrope', sans-serif;
   background-color: #f4f4f4;
   overflow: hidden;
+  z-index: auto;
 }
 
-.signin-header {
-  position: absolute;
-  top: 1.5rem;
-  left: 4rem;
+.signInHeader {
+  text-align: center;
+  width: 100%;
+  font-family: 'Manrope SemiBold', sans-serif;
+  font-weight: bold;
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
-.signin-background-container {
+.signInBackgroundContainer {
   position: fixed;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  z-index: -1;
+  z-index: 0;
 }
 
-.signin-ellipse {
+.signInEllipse {
   position: absolute;
   width: 60rem;
   height: 60rem;
 }
 
-.signin-ellipse-top {
-  top: 0;
-  right: 0;
-  transform: translate(1%, -60%);
-}
-
-.signin-ellipse-bottom {
+.signInEllipseTop {
   bottom: 0;
-  left: 0;
-  transform: translate(-1%, 60%);
+  right: 0;
+  transform: translate(1%, -40%);
 }
 
-.signin-container {
+.signInEllipseBottom {
+  top: 0;
+  left: 0;
+  transform: translate(-1%, 40%);
+}
+
+.signInContainer {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -53,10 +57,11 @@ body {
   width: 100%;
 }
 
-.signin-form {
+.signInForm {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   border: #d0cece 0.1rem solid;
   background-color: #ffffff;
@@ -66,7 +71,7 @@ body {
   height: 31rem;
 }
 
-.signin-input {
+.signInInput {
   box-sizing: border-box;
   border: #d0cece 0.1rem solid;
   font-family: 'Manrope Light', sans-serif;
@@ -78,7 +83,7 @@ body {
   margin: 0.5rem 0;
 }
 
-.signin-text {
+.signInText {
   align-self: flex-start;
   font-weight: normal;
   font-family: 'Manrope Light', sans-serif;
@@ -86,7 +91,7 @@ body {
   margin-left: 4rem;
 }
 
-.signin-forgot {
+.signInForgot {
   align-self: flex-end;
   margin-right: 4.25rem;
   font-size: 0.85rem;
@@ -95,14 +100,7 @@ body {
   cursor: pointer;
 }
 
-#signin-header {
-  font-family: 'Manrope SemiBold', sans-serif;
-  font-weight: bold;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-}
-
-#signin-button {
+.signInButton {
   font-family: 'Manrope SemiBold', sans-serif;
   font-size: 1.15rem;
   color: #ffffff;
@@ -114,14 +112,31 @@ body {
   margin-top: 1.5rem;
 }
 
-#logo {
+.signInLogoContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80%;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  z-index: 10;
+  background: transparent;
+}
+
+.signInLogo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   font-family: 'Circular Std', sans-serif;
   font-weight: bold;
   font-size: 2.15rem;
+  padding-left: 4rem;
+  padding-top: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-#name {
+.signInLogoName {
   margin-left: 1rem;
 }

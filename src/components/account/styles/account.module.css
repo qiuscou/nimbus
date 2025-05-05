@@ -1,11 +1,11 @@
-.account-panel {
+.accountPanel {
   padding: 1.75rem;
   display: flex;
   gap: 5rem;
 }
 
-.account-personal-data,
-.account-security {
+.accountPersonalData,
+.accountSecurity {
   position: relative;
   background-color: #ffffff;
   padding: 2rem;
@@ -20,33 +20,37 @@
   gap: 0.55rem;
 }
 
-.account-header {
+.accountHeader {
   font-weight: bold;
   font-size: 2rem;
   font-family: 'Manrope SemiBold', sans-serif;
 }
 
-.account-caption-grey {
+.accountCaptionGrey {
   font-size: 1.05rem;
   font-family: 'Manrope Regular', sans-serif;
   color: #d0cece;
 }
 
-.account-caption-red {
+.accountCaptionRed {
   font-size: 1.15rem;
   font-family: 'Manrope Medium', sans-serif;
   color: #f95454;
 }
 
-.account-description {
+.accountDescription {
   font-size: 0.95rem;
   font-family: 'Manrope Regular', sans-serif;
   color: #d0cece;
   white-space: pre-line;
 }
 
-.account-user-data {
+.accountUserData {
   font-family: 'Manrope Medium', sans-serif;
   font-size: 1.15rem;
   color: #2c2d2e;
+}
+
+.click {
+  cursor: pointer;
 }
