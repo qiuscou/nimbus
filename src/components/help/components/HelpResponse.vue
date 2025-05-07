@@ -1,10 +1,14 @@
 <script>
+import { RESPONSE } from '../composables/constants'
 import styles from '../styles/help.module.css'
 
 export default {
   name: 'HelpResponse',
   props: {
-    header: String,
+    header: {
+      type: String,
+      default: RESPONSE.response,
+    },
     content: String,
   },
   data() {

@@ -15,30 +15,6 @@ export function useAccount() {
     phone: '',
   })
 
-  const personalDataPanelAccountData = ref({
-    header: 'Персональные данные',
-    snp: 'Фамилия, Имя, Отчество',
-    birth_date: 'Дата рождения',
-    gender: 'Пол',
-    country: 'Страна',
-  })
-
-  const securityPanelAccountData = ref({
-    header: 'Безопасность',
-    email: 'Email',
-    phone: 'Телефон',
-    password: 'Пароль',
-    delete_account: 'Удалить аккаунт',
-    delete_account_description: 'После удаления все ваши данные будут безвозвратно удалены.',
-    logout: 'Выйти из аккаунта',
-    logout_description: 'Рекомендуется при использовании чужого устройства.',
-  })
-
-  const buttonAccountData = ref({
-    save: 'Сохранить',
-    cancel: 'Отменить',
-  })
-
   const fetchUserData = async () => {
     try {
       const auth = getAuth()
@@ -78,9 +54,6 @@ export function useAccount() {
 
   return {
     userData,
-    personalDataPanelAccountData,
-    securityPanelAccountData,
-    buttonAccountData,
     fetchUserData,
   }
 }

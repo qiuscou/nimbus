@@ -1,10 +1,11 @@
 <script>
 import styles from '../styles/account.module.css'
+import { LABELS } from '../composables/constants.js'
 
 export default {
-  props: ['user', 'labels'],
+  props: ['user'],
   setup() {
-    return { styles }
+    return { styles, labels: LABELS.personalDataPanel }
   },
 }
 </script>

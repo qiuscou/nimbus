@@ -1,26 +1,23 @@
 <script>
+import { LABELS } from '../composables/constants'
 import styles from '../styles/help.module.css'
 
 export default {
   name: 'AccountHelpPanel',
   props: {
-    accountPanelHelpData: Object,
     selectProblem: Function,
-  },
-  computed: {
-    accountTopics() {
-      return [
-        this.accountPanelHelpData.password_change,
-        this.accountPanelHelpData.change_of_tariff,
-        this.accountPanelHelpData.account_deletion,
-        this.accountPanelHelpData.account_creation,
-        this.accountPanelHelpData.two_factor_authentication,
-      ]
-    },
   },
   data() {
     return {
       styles,
+      accountTopics: Object.values(LABELS.accountPanel).filter(
+        (item) => item !== LABELS.accountPanel.header,
+      ),
+    }
+  },
+  setup() {
+    return {
+      labels: LABELS,
     }
   },
 }
@@ -29,7 +26,7 @@ export default {
 <template>
   <div :class="styles.helpSection">
     <header :class="styles.headerCaption">
-      {{ accountPanelHelpData.header }}
+      {{ labels.accountPanel.header }}
     </header>
 
     <div

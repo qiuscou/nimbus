@@ -1,11 +1,12 @@
 <script>
 import styles from '../styles/account.module.css'
+import { LABELS } from '../composables/constants.js'
 
 export default {
-  props: ['user', 'labels'],
+  props: ['user'],
   emits: ['logout'],
   setup() {
-    return { styles }
+    return { styles, labels: LABELS.securityPanel }
   },
 }
 </script>

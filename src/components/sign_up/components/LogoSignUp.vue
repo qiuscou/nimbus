@@ -1,8 +1,15 @@
 <script>
+import logo from '@/assets/logo/logo.svg'
+
 export default {
   name: 'LogoSignUp',
   props: {
     logoData: Object,
+  },
+  data() {
+    return {
+      logo: logo,
+    }
   },
 }
 </script>
@@ -10,7 +17,7 @@ export default {
 <template>
   <header class="signupHeader">
     <div id="logo">
-      <img :src="logoData.logo" alt="logo" class="click" />
+      <img :src="logo" alt="logo" class="click" />
       <span class="click" id="name">{{ logoData.title }}</span>
     </div>
   </header>

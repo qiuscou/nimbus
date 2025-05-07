@@ -1,26 +1,21 @@
 <script>
+import { LABELS } from '../composables/constants'
 import styles from '../styles/help.module.css'
 
 export default {
   name: 'FilesHelpPanel',
   props: {
-    filesPanelHelpData: Object,
     selectProblem: Function,
   },
   computed: {
     fileTopics() {
-      return [
-        this.filesPanelHelpData.uploading_files,
-        this.filesPanelHelpData.downloading_files,
-        this.filesPanelHelpData.folder_organization,
-        this.filesPanelHelpData.shared_access,
-        this.filesPanelHelpData.recover_deleted_files,
-      ]
+      return Object.values(LABELS.filesPanel).filter((item) => item !== LABELS.filesPanel.header)
     },
   },
   data() {
     return {
       styles,
+      filesPanelHelpData: LABELS.filesPanel,
     }
   },
 }

@@ -1,26 +1,23 @@
 <script>
+import { LABELS } from '../composables/constants'
 import styles from '../styles/help.module.css'
 
 export default {
   name: 'ProblemsHelpPanel',
   props: {
-    problemsPanelHelpData: Object,
     selectProblem: Function,
   },
   computed: {
     problemTopics() {
-      return [
-        this.problemsPanelHelpData.freeing_up_space,
-        this.problemsPanelHelpData.file_not_displayed,
-        this.problemsPanelHelpData.contact_support,
-        this.problemsPanelHelpData.problems_with_downloading_files,
-        this.problemsPanelHelpData.restore_account_access,
-      ]
+      return Object.values(LABELS.problemsPanel).filter(
+        (item) => item !== LABELS.problemsPanel.header,
+      )
     },
   },
   data() {
     return {
       styles,
+      problemsPanelHelpData: LABELS.problemsPanel,
     }
   },
 }
