@@ -1,11 +1,13 @@
 <script>
 import { useMainPage } from '../scripts/useMainPage'
 import { getAuth } from 'firebase/auth'
-import MajorApp from '../major/components/MajorApp.vue'
-import TariffApp from '../tariff/components/TariffApp.vue'
-import UsApp from '../us/components/UsApp.vue'
-import AdvantagesApp from '../advantages/components/AdvantagesApp.vue'
-import QuestionsApp from '../questions/components/QuestionsApp.vue'
+import { doc, getDoc } from 'firebase/firestore'
+import { db } from '@/firebase'
+import MajorApp from '../../major/components/MajorApp.vue'
+import TariffApp from '../../tariff/components/TariffApp.vue'
+import UsApp from '../../us/components/UsApp.vue'
+import AdvantagesApp from '../../advantages/components/AdvantagesApp.vue'
+import QuestionsApp from '../../questions/components/QuestionsApp.vue'
 import { ref, onMounted } from 'vue'
 
 export default {
@@ -15,10 +17,22 @@ export default {
     const { sectionsMajorData, sliderTariffData, goToNewPage } = useMainPage()
     const auth = getAuth()
     const user = ref(null)
+    const role = ref(null)
 
     onMounted(() => {
-      auth.onAuthStateChanged((authUser) => {
-        user.value = authUser
+      auth.onAuthStateChanged(async (authUser) => {
+        if (authUser) {
+          user.value = authUser
+          const docRef = doc(db, 'users', authUser.uid)
+          const docSnap = await getDoc(docRef)
+          if (docSnap.exists()) {
+            role.value = docSnap.data().role || 'Пользователь'
+            console.log('Роль:', role.value)
+          }
+        } else {
+          user.value = null
+          role.value = null
+        }
       })
     })
 
@@ -27,6 +41,7 @@ export default {
       sliderTariffData,
       goToNewPage,
       user,
+      role,
     }
   },
 }
@@ -46,9 +61,16 @@ export default {
             </button>
           </template>
           <template v-else>
-            <button class="click" id="major-account" @click="goToNewPage('Account')">
-              {{ user.email || '-' }}
-            </button>
+            <template v-if="role && role.toLowerCase() === 'администратор'">
+              <button class="click" id="major-account" @click="goToNewPage('Admin')">
+                {{ user.email || '-' }}
+              </button>
+            </template>
+            <template v-else>
+              <button class="click" id="major-account" @click="goToNewPage('Account')">
+                {{ user.email || '-' }}
+              </button>
+            </template>
           </template>
         </template>
       </MajorApp>
@@ -74,4 +96,4 @@ export default {
   </div>
 </template>
 
-<style src="./moduleMainPage.css" scoped></style>
+<style src="../styles/moduleMainPage.css" scoped></style>

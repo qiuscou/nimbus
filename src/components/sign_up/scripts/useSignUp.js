@@ -31,6 +31,7 @@ export function useSignUp() {
         patronymic: patronymic.value,
         dateOfBirth: dateOfBirth.value,
         createdAt: new Date(),
+        role: 'Пользователь',
         tariff: {
           gb: selectedGB.value,
           days: selectedDays.value,
