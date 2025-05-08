@@ -57,7 +57,7 @@ export default {
     <div id="app-tariff">
       <TariffApp>
         <template #checkout>
-          <button class="click" id="tariff-checkout" @click="goToNewPage('Home')">
+          <button class="click" id="tariff-checkout" @click="goToNewPage('SignUp')">
             {{ sliderTariffData.checkout }}
           </button>
         </template>

@@ -140,3 +140,7 @@
 .signInLogoName {
   margin-left: 1rem;
 }
+
+.click {
+  cursor: pointer;
+}
