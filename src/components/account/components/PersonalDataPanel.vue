@@ -1,6 +1,6 @@
 <script>
 import styles from '../styles/account.module.css'
-import { LABELS } from '../composables/constants.js'
+import { LABELS } from '../scripts/constants.js'
 
 export default {
   props: ['user'],

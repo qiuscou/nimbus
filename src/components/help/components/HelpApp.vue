@@ -3,8 +3,8 @@ import FilesHelpPanel from './FilesHelpPanel.vue'
 import AccountHelpPanel from './AccountHelpPanel.vue'
 import ProblemsHelpPanel from './ProblemsHelpPanel.vue'
 import HelpResponse from './HelpResponse.vue'
-import { useHelp } from '../composables/useHelp'
-import { LABELS } from '../composables/constants'
+import { useHelp } from '../scripts/useHelp'
+import { LABELS } from '../scripts/constants'
 import styles from '../styles/help.module.css'
 
 export default {

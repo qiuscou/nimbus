@@ -2,7 +2,7 @@
 import { onMounted } from 'vue'
 import { getAuth, signOut } from 'firebase/auth'
 import { useRouter } from 'vue-router'
-import { useAccount } from '../composables/useAccount.js'
+import { useAccount } from '../scripts/useAccount.js'
 import PersonalDataPanel from './PersonalDataPanel.vue'
 import SecurityPanel from './SecurityPanel.vue'
 import styles from '../styles/account.module.css'

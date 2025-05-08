@@ -1,5 +1,5 @@
 <script>
-import { LABELS } from '../composables/constants'
+import { LABELS } from '../scripts/constants'
 import styles from '../styles/help.module.css'
 
 export default {

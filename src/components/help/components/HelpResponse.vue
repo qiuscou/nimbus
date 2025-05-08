@@ -1,5 +1,5 @@
 <script>
-import { RESPONSE } from '../composables/constants'
+import { RESPONSE } from '../scripts/constants'
 import styles from '../styles/help.module.css'
 
 export default {
