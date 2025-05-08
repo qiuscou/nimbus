@@ -1,6 +1,5 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <script>
-import { useTariff } from './useTariff'
+import { useTariff } from '../scripts/useTariff'
 
 export default {
   name: 'TariffApp',
@@ -108,4 +107,4 @@ export default {
   </div>
 </template>
 
-<style src="./moduleTariff.css" scoped></style>
+<style src="../styles/moduleTariff.css" scoped></style>

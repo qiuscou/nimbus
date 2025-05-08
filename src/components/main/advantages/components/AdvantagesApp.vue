@@ -1,6 +1,5 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <script>
-import { useAdvantages } from './useAdvantages'
+import { useAdvantages } from '../sripts/useAdvantages'
 
 export default {
   name: 'AdvantagesApp',
@@ -54,4 +53,4 @@ export default {
   </div>
 </template>
 
-<style src="./moduleAdvantages.css" scoped></style>
+<style src="../styles/moduleAdvantages.css" scoped></style>

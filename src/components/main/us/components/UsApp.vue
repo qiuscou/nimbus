@@ -1,17 +1,13 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <script>
-import { useUs } from './useUs'
+import { useUs } from '../scripts/useUs'
 
 export default {
   name: 'UsApp',
   setup() {
-    const { headerUsData, missionUsData, subheadingUsData, formattedSubheading, formattedMission } =
-      useUs()
+    const { headerUsData, formattedSubheading, formattedMission } = useUs()
 
     return {
       headerUsData,
-      missionUsData,
-      subheadingUsData,
       formattedSubheading,
       formattedMission,
     }
@@ -47,4 +43,4 @@ export default {
   </div>
 </template>
 
-<style src="./moduleUs.css" scoped></style>
+<style src="../styles/moduleUs.css" scoped></style>

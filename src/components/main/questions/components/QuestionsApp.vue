@@ -1,6 +1,6 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <script>
-import { useQuestions } from './useQuestions'
+import { useQuestions } from '../scripts/useQuestions'
+import { QUESTIONS_CONSTANTS } from '../scripts/constants'
 import plus from '@/assets/elements/plus.svg'
 import minus from '@/assets/elements/minus.svg'
 
@@ -10,6 +10,7 @@ export default {
     const { questions, toggleExpand } = useQuestions()
 
     return {
+      header: QUESTIONS_CONSTANTS.header,
       questions,
       toggleExpand,
       plus,
@@ -21,7 +22,7 @@ export default {
 
 <template>
   <div class="questions-header-container">
-    <span id="questions-header">Частые вопросы</span>
+    <span id="questions-header">{{ header }}</span>
   </div>
   <div class="questions-frequent-container">
     <div
@@ -41,4 +42,4 @@ export default {
   </div>
 </template>
 
-<style src="./moduleQuestions.css" scoped></style>
+<style src="../styles/moduleQuestions.css" scoped></style>

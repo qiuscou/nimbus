@@ -1,17 +1,15 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { TARIFF_CONSTANTS } from './constants'
 
 export function useTariff() {
   const store = useStore()
 
-  const headerTariffData = {
-    header: 'Собери свой тариф',
-    subheading: 'Введи нужное количество гигабайт и срок использования и узнай цену',
-  }
+  const headerTariffData = TARIFF_CONSTANTS.headerTariffData
+  const gigabyteTariffData = TARIFF_CONSTANTS.gigabyteTariffData
+  const daysTariffData = TARIFF_CONSTANTS.daysTariffData
+  const priceTariffData = TARIFF_CONSTANTS.priceTariffData
 
-  const gigabyteTariffData = computed(() => store.state.tariff.gigabyteTariffData)
-  const daysTariffData = computed(() => store.state.tariff.daysTariffData)
-  const priceTariffData = computed(() => store.state.tariff.priceTariffData)
   const gigabytes = computed(() => store.state.tariff.gigabytes)
   const days = computed(() => store.state.tariff.days)
 

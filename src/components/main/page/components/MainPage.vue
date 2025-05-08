@@ -1,12 +1,11 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <script>
-import { useMainPage } from './useMainPage'
+import { useMainPage } from '../scripts/useMainPage'
 import { getAuth } from 'firebase/auth'
-import MajorApp from '../major/Major.vue'
-import TariffApp from '../tariff/Tariff.vue'
-import UsApp from '../us/Us.vue'
-import AdvantagesApp from '../advantages/Advantages.vue'
-import QuestionsApp from '../questions/Questions.vue'
+import MajorApp from '../major/components/MajorApp.vue'
+import TariffApp from '../tariff/components/TariffApp.vue'
+import UsApp from '../us/components/UsApp.vue'
+import AdvantagesApp from '../advantages/components/AdvantagesApp.vue'
+import QuestionsApp from '../questions/components/QuestionsApp.vue'
 import { ref, onMounted } from 'vue'
 
 export default {
