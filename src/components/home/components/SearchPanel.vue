@@ -1,6 +1,7 @@
 <script>
 import magnifier from '@/assets/elements/magnifier.svg'
 import chevron_down from '@/assets/elements/chevron_down.svg'
+import { SEARCH_PANEL_CONSTANTS } from '../scripts/constants'
 
 export default {
   name: 'SearchPanel',
@@ -11,12 +12,7 @@ export default {
     return {
       magnifier,
       chevron_down,
-      searchPanelHomeData: {
-        search: 'Поиск по облаку',
-        button: 'Найти',
-        file_type: 'Тип файла',
-        file_types: ['Изображения', 'Документы', 'Музыка', 'Видео', 'Папки', 'Архивы'],
-      },
+      searchPanelHomeData: SEARCH_PANEL_CONSTANTS,
     }
   },
 }

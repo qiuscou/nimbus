@@ -8,6 +8,7 @@ import trash_empty from '@/assets/elements/trash_empty.svg'
 import user_circle from '@/assets/elements/user_circle.svg'
 import headphones from '@/assets/elements/headphones.svg'
 import data from '@/assets/elements/data.svg'
+import { SIDE_PANEL_CONSTANTS } from '../scripts/constants'
 
 export default {
   name: 'SidePanel',
@@ -18,14 +19,7 @@ export default {
     return {
       logo,
       stackPanelHomeData: {
-        all_files: 'Все файлы',
-        gallery: 'Галерея',
-        favorites: 'Избранное',
-        recents: 'Недавние',
-        trash: 'Корзина',
-        account: 'Аккаунт',
-        help: 'Помощь',
-        tariff: 'Тариф',
+        ...SIDE_PANEL_CONSTANTS,
         chevron_right,
         image,
         heart,

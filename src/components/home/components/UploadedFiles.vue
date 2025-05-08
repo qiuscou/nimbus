@@ -1,8 +1,15 @@
 <script>
+import { UPLOADED_FILES_CONSTANTS } from '../scripts/constants'
+
 export default {
   name: 'UploadedFiles',
   props: {
     uploadedFiles: Array,
+  },
+  data() {
+    return {
+      uploadedFilesConstants: UPLOADED_FILES_CONSTANTS,
+    }
   },
 }
 </script>
@@ -54,7 +61,7 @@ export default {
       @dragleave="$emit('drag-leave', $event)"
       @drop.prevent="$emit('empty-area-drop', $event)"
     >
-      <p>Перетащите файлы сюда</p>
+      <p>{{ uploadedFilesConstants.empty_state }}</p>
     </div>
   </div>
 </template>

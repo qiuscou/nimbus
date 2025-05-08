@@ -1,4 +1,5 @@
 <script>
+import logo from '@/assets/logo/logo.svg'
 import styles from '../styles/sign_in.module.css'
 
 export default {
@@ -8,6 +9,7 @@ export default {
   },
   data() {
     return {
+      logo,
       styles,
     }
   },
@@ -17,7 +19,7 @@ export default {
 <template>
   <header :class="styles.signInLogoContainer">
     <div :class="styles.signInLogo">
-      <img :src="data.logo" alt="logo" :class="styles.click" />
+      <img :src="logo" alt="logo" :class="styles.click" />
       <span :class="styles.signInLogoName">{{ data.title }}</span>
     </div>
   </header>

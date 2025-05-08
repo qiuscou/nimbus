@@ -1,4 +1,5 @@
 <script>
+import ellipse from '@/assets/elements/ellipse.svg'
 import styles from '../styles/sign_in.module.css'
 
 export default {
@@ -8,6 +9,7 @@ export default {
   },
   data() {
     return {
+      ellipse,
       styles,
     }
   },
@@ -16,15 +18,7 @@ export default {
 
 <template>
   <div :class="styles.signInBackgroundContainer">
-    <img
-      :src="data.ellipse"
-      alt="ellipse"
-      :class="[styles.signInEllipse, styles.signInEllipseTop]"
-    />
-    <img
-      :src="data.ellipse"
-      alt="ellipse"
-      :class="[styles.signInEllipse, styles.signInEllipseBottom]"
-    />
+    <img :src="ellipse" alt="ellipse" :class="[styles.signInEllipse, styles.signInEllipseTop]" />
+    <img :src="ellipse" alt="ellipse" :class="[styles.signInEllipse, styles.signInEllipseBottom]" />
   </div>
 </template>

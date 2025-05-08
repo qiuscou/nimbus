@@ -3,8 +3,7 @@ import { useSignIn } from '../scripts/useSignIn'
 import LogoSignIn from './LogoSignIn.vue'
 import BackgroundSignIn from './BackgroundSignIn.vue'
 import FormSignIn from './FormSignIn.vue'
-import logo from '@/assets/logo/logo.svg'
-import ellipse from '@/assets/elements/ellipse.svg'
+import { SIGN_IN_CONSTANTS } from '../scripts/constants'
 import styles from '../styles/sign_in.module.css'
 
 export default {
@@ -20,21 +19,9 @@ export default {
       resetPassword,
       resetEmail,
       styles,
-      logoSignInData: {
-        logo: logo,
-        title: 'nimbus',
-      },
-      formSignInData: {
-        header: 'Рады вас видеть!',
-        email: 'Email',
-        password: 'Пароль',
-        forgot_email: 'Забыли email?',
-        forgot_password: 'Забыли пароль?',
-        sign_in: 'Войти',
-      },
-      backgroundSignInData: {
-        ellipse: ellipse,
-      },
+      logoSignInData: SIGN_IN_CONSTANTS.logoSignInData,
+      formSignInData: SIGN_IN_CONSTANTS.formSignInData,
+      backgroundSignInData: SIGN_IN_CONSTANTS.backgroundSignInData,
     }
   },
 }
