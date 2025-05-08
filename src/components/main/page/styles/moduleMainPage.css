@@ -22,7 +22,8 @@
 }
 
 #major-sign-in,
-#major-account {
+#major-account,
+#major-admin {
   font-family: 'Manrope SemiBold', sans-serif;
   font-weight: bold;
   font-size: 1.15rem;

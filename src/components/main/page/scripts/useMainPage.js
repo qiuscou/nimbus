@@ -6,6 +6,7 @@ export function useMainPage() {
   const sectionsMajorData = {
     sign_up: 'Регистрация',
     sign_in: 'Войти',
+    admin_panel: 'Панель администратора',
   }
 
   const sliderTariffData = {

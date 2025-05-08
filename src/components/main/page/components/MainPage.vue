@@ -61,9 +61,9 @@ export default {
             </button>
           </template>
           <template v-else>
-            <template v-if="role && role.toLowerCase() === 'администратор'">
-              <button class="click" id="major-account" @click="goToNewPage('Admin')">
-                {{ user.email || '-' }}
+            <template v-if="role === 'Администратор'">
+              <button class="click" id="major-admin" @click="goToNewPage('Admin')">
+                {{ sectionsMajorData.admin_panel }}
               </button>
             </template>
             <template v-else>
