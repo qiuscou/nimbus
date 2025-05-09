@@ -9,12 +9,13 @@ import UsApp from '../../us/components/UsApp.vue'
 import AdvantagesApp from '../../advantages/components/AdvantagesApp.vue'
 import QuestionsApp from '../../questions/components/QuestionsApp.vue'
 import { ref, onMounted } from 'vue'
+import logo from '@/assets/logo/logo.svg'
 
 export default {
   name: 'MainPageApp',
   components: { MajorApp, TariffApp, UsApp, AdvantagesApp, QuestionsApp },
   setup() {
-    const { sectionsMajorData, sliderTariffData, goToNewPage } = useMainPage()
+    const { headerMajorData, sectionsMajorData, sliderTariffData, goToNewPage } = useMainPage()
     const auth = getAuth()
     const user = ref(null)
     const role = ref(null)
@@ -37,11 +38,13 @@ export default {
     })
 
     return {
+      headerMajorData,
       sectionsMajorData,
       sliderTariffData,
       goToNewPage,
       user,
       role,
+      logo,
     }
   },
 }
@@ -51,6 +54,12 @@ export default {
   <div class="app-main">
     <div id="app-major">
       <MajorApp>
+        <template #logo>
+          <div id="logo" @click="goToNewPage('Home')">
+            <img :src="logo" alt="logo" class="click" />
+            <span class="click" id="name">{{ headerMajorData.title }}</span>
+          </div>
+        </template>
         <template #buttons>
           <template v-if="!user">
             <button class="click" id="major-sign-up" @click="goToNewPage('SignUp')">

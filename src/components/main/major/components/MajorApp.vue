@@ -1,5 +1,4 @@
 <script>
-import logo from '@/assets/logo/logo.svg'
 import ellipse from '@/assets/elements/ellipse.svg'
 import { MAJOR_CONSTANTS } from '../scripts/constants'
 
@@ -7,11 +6,9 @@ export default {
   name: 'MajorApp',
   data() {
     return {
-      headerMajorData: MAJOR_CONSTANTS.headerMajorData,
       sectionsMajorData: MAJOR_CONSTANTS.sectionsMajorData,
       textMajorData: MAJOR_CONSTANTS.textMajorData,
       ellipse,
-      logo,
     }
   },
   methods: {
@@ -24,16 +21,17 @@ export default {
         })
       }
     },
+    goToHome() {
+      const router = router()
+      router.push({ name: 'Home' })
+    },
   },
 }
 </script>
 
 <template>
   <header class="major-header">
-    <div id="logo">
-      <img :src="logo" alt="logo" class="click" />
-      <span class="click" id="name">{{ headerMajorData.title }}</span>
-    </div>
+    <slot name="logo"></slot>
 
     <div class="major-sections-container">
       <span class="click" id="about_us" @click="scrollTo('app-us')">
