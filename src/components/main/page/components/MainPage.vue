@@ -61,16 +61,13 @@ export default {
             </button>
           </template>
           <template v-else>
-            <template v-if="role === 'Администратор'">
-              <button class="click" id="major-admin" @click="goToNewPage('Admin')">
-                {{ sectionsMajorData.admin_panel }}
-              </button>
-            </template>
-            <template v-else>
-              <button class="click" id="major-account" @click="goToNewPage('Account')">
-                {{ user.email || '-' }}
-              </button>
-            </template>
+            <button
+              class="click"
+              id="major-account"
+              @click="goToNewPage(role === 'Администратор' ? 'Admin' : 'Account')"
+            >
+              {{ user.email || '-' }}
+            </button>
           </template>
         </template>
       </MajorApp>
