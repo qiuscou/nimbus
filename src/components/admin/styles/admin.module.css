@@ -1,0 +1,163 @@
+.adminWrapper {
+  display: flex;
+  padding: 0.75rem;
+  box-sizing: border-box;
+  height: calc(100vh - 1.5rem);
+  background-color: #f6f7f8;
+}
+
+.adminContainer {
+  flex: 1;
+  border: 1px solid #8c8e93;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.adminTitle {
+  font-family: 'Manrope SemiBold', sans-serif;
+  font-size: 1.5rem;
+  color: #2c2d2e;
+  margin-bottom: 0.5rem;
+}
+
+.adminSubtitle {
+  font-family: 'Manrope Regular', sans-serif;
+  font-size: 1.05rem;
+  color: #8c8e93;
+  margin-bottom: 1.5rem;
+}
+
+.filterForm {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filterForm label {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Manrope Regular', sans-serif;
+  font-size: 0.9rem;
+  color: #2c2d2e;
+  flex: 1;
+  min-width: 200px;
+}
+
+.filterInput,
+.filterSelect {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-family: 'Manrope Regular', sans-serif;
+  font-size: 0.9rem;
+  width: 100%;
+  box-sizing: border-box;
+  height: 2.5rem;
+}
+
+.filterButton,
+.adminButton {
+  font-family: 'Manrope SemiBold', sans-serif;
+  font-size: 1rem;
+  padding: 0.5rem 1.5rem;
+  color: #ffffff;
+  background: #197ccd;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adminActions {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.adminButton:disabled {
+  background: #8c8e93;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.errorMessage {
+  font-family: 'Manrope Regular', sans-serif;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  color: #d32f2f;
+  background-color: #fde0e0;
+  border: 1px solid #f5c2c7;
+}
+
+.successMessage {
+  font-family: 'Manrope Regular', sans-serif;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  color: #388e3c;
+  background-color: #ebf5eb;
+  border: 1px solid #c3e6cb;
+}
+
+.usersPreview {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  background: #ffffff;
+}
+
+.usersCount {
+  font-family: 'Manrope SemiBold', sans-serif;
+  font-size: 1.2rem;
+  color: #2c2d2e;
+  margin-bottom: 1rem;
+}
+
+.usersTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Manrope Regular', sans-serif;
+}
+
+.usersTable th {
+  font-family: 'Manrope SemiBold', sans-serif;
+  font-size: 1rem;
+  color: #2c2d2e;
+  background-color: #f6f7f8;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.usersTable td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  color: #2c2d2e;
+}
+
+.uidCell {
+  font-family: 'Manrope Light', sans-serif;
+  font-size: 0.85rem;
+  color: #8c8e93;
+}
+
+.moreUsers td {
+  font-family: 'Manrope Regular', sans-serif;
+  font-size: 0.9rem;
+  color: #8c8e93;
+  text-align: center;
+  padding: 1rem;
+}
