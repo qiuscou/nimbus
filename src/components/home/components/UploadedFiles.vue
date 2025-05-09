@@ -11,6 +11,32 @@ export default {
       uploadedFilesConstants: UPLOADED_FILES_CONSTANTS,
     }
   },
+  methods: {
+    isImage(fileType) {
+      return ['image/png', 'image/jpeg', 'image/gif', 'image/webp'].includes(fileType)
+    },
+    isText(fileType) {
+      return ['text/plain', 'application/json', 'application/xml'].includes(fileType)
+    },
+    isOfficeDocument(fileType) {
+      return [
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        'application/vnd.ms-powerpoint',
+      ].includes(fileType)
+    },
+    readFileContent(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => resolve(reader.result)
+        reader.onerror = reject
+        reader.readAsText(file)
+      })
+    },
+  },
 }
 </script>
 
@@ -39,18 +65,26 @@ export default {
         @drop="$emit('file-drop', { event: $event, index })"
       >
         <div class="home-uploaded-file-handle"></div>
-        <img
-          v-if="file.preview"
-          :src="file.preview"
-          class="home-uploaded-file-icon"
-          alt="File Preview"
-        />
-        <img
-          v-else
-          :src="$parent.getFileIcon(file.type)"
-          class="home-uploaded-file-icon"
-          alt="File Icon"
-        />
+        <template v-if="isImage(file.type)">
+          <img
+            :src="file.preview || URL.createObjectURL(file)"
+            class="home-uploaded-file-content preview"
+            alt="File Content"
+          />
+        </template>
+        <template v-else-if="isText(file.type)">
+          <div class="home-uploaded-file-content preview">
+            <pre>{{ file.content?.slice(0, 100) || 'No preview available' }}...</pre>
+          </div>
+        </template>
+        <template v-else-if="isOfficeDocument(file.type)">
+          <span class="home-uploaded-file-content preview">
+            {{ file.name }} (Office Document)
+          </span>
+        </template>
+        <template v-else>
+          <span class="home-uploaded-file-content preview">Невозможно отобразить содержимое</span>
+        </template>
         <span class="home-uploaded-file-name">{{ file.name }}</span>
       </div>
     </div>

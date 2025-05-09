@@ -418,3 +418,13 @@
 .home-uploaded-files-wrapper::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
+
+.home-uploaded-file-content.preview {
+  max-width: 100px;
+  max-height: 100px;
+  overflow: hidden;
+  display: block;
+  object-fit: cover;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
