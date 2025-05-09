@@ -104,13 +104,24 @@ export default {
               <td>{{ user.dateOfBirth || TEXTS.table.notSpecified }}</td>
               <td>{{ user.country || TEXTS.table.notSpecified }}</td>
             </tr>
-            <tr v-if="filteredUsers.length > itemsPerPage" :class="styles.moreUsers">
-              <td colspan="8">
-                {{ TEXTS.table.moreUsers.replace('{count}', filteredUsers.length - itemsPerPage) }}
-              </td>
-            </tr>
           </tbody>
         </table>
+
+        <div :class="styles.pagination">
+          <button :class="styles.paginationButton" @click="prevPage" :disabled="currentPage === 1">
+            {{ TEXTS.table.prevPage }}
+          </button>
+          <span :class="styles.paginationInfo">
+            {{ TEXTS.table.page }} {{ currentPage }} {{ TEXTS.table.of }} {{ totalPages }}
+          </span>
+          <button
+            :class="styles.paginationButton"
+            @click="nextPage"
+            :disabled="currentPage === totalPages"
+          >
+            {{ TEXTS.table.nextPage }}
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -1,9 +1,9 @@
-export const GENDERS = ['мужской', 'женский']
+export const GENDERS = ['Мужской', 'Женский']
 
 export const TEXTS = {
-  greeting: 'Привет,',
+  greeting: 'Рады видеть вас,',
   defaultAdminName: 'Администратор',
-  subtitle: 'Здесь вы можете управлять пользователями и данными.',
+  subtitle: 'Здесь вы можете управлять данными',
   filters: {
     surname: 'Фамилия',
     name: 'Имя',
@@ -37,5 +37,9 @@ export const TEXTS = {
     country: 'Страна',
     totalUsers: 'Всего пользователей:',
     moreUsers: '... и еще {count} пользователей',
+    prevPage: '<',
+    nextPage: '>',
+    page: 'Страница',
+    of: 'из',
   },
 }

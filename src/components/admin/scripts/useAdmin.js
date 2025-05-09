@@ -32,6 +32,10 @@ export function useAdmin() {
     return filteredUsers.value.slice(start, end)
   })
 
+  const totalPages = computed(() => {
+    return Math.ceil(filteredUsers.value.length / itemsPerPage.value)
+  })
+
   const checkAuthStatus = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -120,11 +124,13 @@ export function useAdmin() {
       const exportData = filteredUsers.value.map((user) => ({
         UID: user.uid || 'Не указано',
         Email: user.email || 'Не указано',
+        Номер: user.phone || 'Не указано',
         Фамилия: user.surname || 'Не указано',
         Имя: user.name || 'Не указано',
         Отчество: user.patronymic || 'Не указано',
         Пол: user.gender || 'Не указано',
         'Дата рождения': user.dateOfBirth || 'Не указано',
+        Пароль: user.password || 'Не указано',
         Страна: user.country || 'Не указано',
       }))
 
@@ -140,6 +146,18 @@ export function useAdmin() {
       error.value = 'Произошла ошибка при экспорте: ' + err.message
     } finally {
       loading.value = false
+    }
+  }
+
+  const nextPage = () => {
+    if (currentPage.value < Math.ceil(filteredUsers.value.length / itemsPerPage.value)) {
+      currentPage.value++
+    }
+  }
+
+  const prevPage = () => {
+    if (currentPage.value > 1) {
+      currentPage.value--
     }
   }
 
@@ -159,5 +177,8 @@ export function useAdmin() {
     fetchUsers,
     applyFilters,
     exportUsersToExcel,
+    nextPage,
+    prevPage,
+    totalPages,
   }
 }

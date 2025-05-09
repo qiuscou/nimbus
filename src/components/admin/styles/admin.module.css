@@ -78,7 +78,7 @@
 }
 
 .adminActions {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   display: flex;
   flex-direction: row;
   gap: 1rem;
@@ -160,4 +160,30 @@
   color: #8c8e93;
   text-align: center;
   padding: 1rem;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.paginationButton {
+  padding: 0.1rem 0.3rem;
+  font-family: 'Manrope SemiBold', sans-serif;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  font-size: 1.5rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.paginationInfo {
+  font-family: 'Manrope Regular', sans-serif;
+  font-size: 1rem;
+  color: #2c2d2e;
 }
