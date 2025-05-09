@@ -41,12 +41,8 @@ export default {
 </script>
 
 <template>
-  <div
-    class="home-files-container"
-    @dragover="$emit('drag-over', $event)"
-    @dragleave="$emit('drag-leave', $event)"
-    @drop.prevent="$emit('empty-area-drop', $event)"
-  >
+  <div class="home-files-container">
+    <slot name="actions"></slot>
     <div
       class="home-uploaded-files-wrapper"
       v-if="uploadedFiles.length"
