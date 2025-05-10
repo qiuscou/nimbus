@@ -54,7 +54,7 @@ export default {
         </label>
         <label>
           {{ TEXTS.filters.dateOfBirth }}
-          <input v-model="filters.dateOfBirth" type="date" :class="styles.filterInput" />
+          <input v-model="filters.dateOfBirth" type="text" :class="styles.filterInput" />
         </label>
         <label>
           {{ TEXTS.filters.country }}

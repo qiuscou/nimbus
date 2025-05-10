@@ -9,6 +9,7 @@ export default {
   data() {
     return {
       uploadedFilesConstants: UPLOADED_FILES_CONSTANTS,
+      editingIndex: null,
     }
   },
   methods: {
@@ -27,6 +28,12 @@ export default {
         'application/vnd.openxmlformats-officedocument.presentationml.presentation',
         'application/vnd.ms-powerpoint',
       ].includes(fileType)
+    },
+    editFileName(index) {
+      this.editingIndex = index
+    },
+    saveFileName() {
+      this.editingIndex = null
     },
     readFileContent(file) {
       return new Promise((resolve, reject) => {
@@ -75,13 +82,27 @@ export default {
         </template>
         <template v-else-if="isOfficeDocument(file.type)">
           <span class="home-uploaded-file-content preview">
-            {{ file.name }} (Office Document)
+            {{ file.name }}
           </span>
         </template>
         <template v-else>
-          <span class="home-uploaded-file-content preview">Невозможно отобразить содержимое</span>
+          <span class="home-uploaded-file-content preview">{{
+            uploadedFilesConstants.unable_to_display_content
+          }}</span>
         </template>
-        <span class="home-uploaded-file-name">{{ file.name }}</span>
+        <span class="home-uploaded-file-name" @dblclick="editFileName(index)">
+          <template v-if="editingIndex === index">
+            <input
+              v-model="file.name"
+              @blur="saveFileName"
+              @keyup.enter="saveFileName"
+              class="file-name-input"
+            />
+          </template>
+          <template v-else>
+            {{ file.name }}
+          </template>
+        </span>
       </div>
     </div>
     <div

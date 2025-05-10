@@ -20,7 +20,7 @@ export default {
         { value: 'excel', label: 'Excel' },
         { value: 'powerpoint', label: 'PowerPoint' },
       ],
-      isFormatSelectorVisible: false, // Добавлено
+      isFormatSelectorVisible: false,
     }
   },
   methods: {

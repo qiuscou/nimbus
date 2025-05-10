@@ -18,4 +18,5 @@ export const SEARCH_PANEL_CONSTANTS = {
 
 export const UPLOADED_FILES_CONSTANTS = {
   empty_state: 'Перетащите файлы сюда',
+  unable_to_display_content: 'Невозможно отобразить содержимое',
 }

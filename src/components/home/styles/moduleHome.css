@@ -35,7 +35,7 @@
 .home-panel-search {
   display: flex;
   width: 100%;
-  max-width: 77.5rem;
+  max-width: 78.5rem;
   align-items: center;
   box-sizing: border-box;
   margin-bottom: 1rem;
@@ -457,4 +457,25 @@
   background: #ffffff;
   padding: 0.5rem;
   white-space: nowrap;
+}
+
+.file-name-input {
+  width: 100%;
+  border: 1px solid #197ccd;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: 'Manrope Regular', sans-serif;
+  font-size: 0.85rem;
+  color: #2c2d2e;
+  background-color: #ffffff;
+  outline: none;
+  box-sizing: border-box;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.file-name-input:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 4px rgba(25, 124, 205, 0.5);
 }
