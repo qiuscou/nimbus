@@ -7,13 +7,20 @@ export default {
   name: 'SearchPanel',
   props: {
     selectedFileType: String,
+    searchQuery: String,
   },
+  emits: ['update:selectedFileType', 'update:searchQuery'],
   data() {
     return {
       magnifier,
       chevron_down,
       searchPanelHomeData: SEARCH_PANEL_CONSTANTS,
     }
+  },
+  methods: {
+    handleSearchInput(e) {
+      this.$emit('update:searchQuery', e.target.value)
+    },
   },
 }
 </script>
@@ -22,7 +29,13 @@ export default {
   <div class="home-panel-search">
     <div class="home-container-search">
       <img :src="magnifier" alt="search" class="home-icon" />
-      <input type="text" :placeholder="searchPanelHomeData.search" class="home-input-search" />
+      <input
+        type="text"
+        :placeholder="searchPanelHomeData.search"
+        :value="searchQuery"
+        @input="handleSearchInput"
+        class="home-input-search"
+      />
       <div class="home-custom-select-wrapper">
         <select
           id="home-file-type"
