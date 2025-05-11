@@ -62,10 +62,21 @@ export default {
       this.editingIndex = this.contextMenu.targetIndex
       this.closeContextMenu()
     },
-    moveToTrash() {
-      const updatedFiles = this.uploadedFiles.filter((_, index) => !this.selectedFiles.has(index))
+    moveToTrash(index) {
+      const updatedFiles = [...this.uploadedFiles]
+      const file = updatedFiles[index]
+
+      updatedFiles[index].preview = null
+
+      if (file.preview) {
+        URL.revokeObjectURL(file.preview)
+        console.log(`Revoked URL: ${file.preview}`)
+      }
+
+      updatedFiles[index].isTrashed = true
+
       this.$emit('update-files', updatedFiles)
-      this.selectedFiles = new Set()
+
       this.closeContextMenu()
     },
     isImage(fileType) {
@@ -127,7 +138,9 @@ export default {
       :style="{ top: `${contextMenu.y}px`, left: `${contextMenu.x}px` }"
     >
       <button class="context-menu-item" @click="handleRename">Переименовать</button>
-      <button class="context-menu-item" @click="moveToTrash">Переместить в корзину</button>
+      <button class="context-menu-item" @click="moveToTrash(contextMenu.targetIndex)">
+        Переместить в корзину
+      </button>
     </div>
 
     <slot name="actions"></slot>
@@ -170,7 +183,8 @@ export default {
         </div>
         <template v-if="isImage(file.type)">
           <img
-            :src="file.preview || URL.createObjectURL(file)"
+            v-if="file.preview"
+            :src="file.preview"
             class="home-uploaded-file-content preview"
             alt="File Content"
           />

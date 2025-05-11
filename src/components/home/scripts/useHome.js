@@ -49,6 +49,8 @@ export function useHome() {
           type: file.type,
           size: file.size,
           lastModified: file.lastModified,
+          isFavorited: false,
+          isTrashed: false,
         }
 
         if (file.type.startsWith('image/')) {
@@ -81,6 +83,8 @@ export function useHome() {
             type: file.type,
             size: file.size,
             lastModified: file.lastModified,
+            isFavorited: false,
+            isTrashed: false,
           }
 
           if (file.type.startsWith('image/')) {
@@ -159,6 +163,8 @@ export function useHome() {
               type: file.type,
               size: file.size,
               lastModified: file.lastModified,
+              isFavorited: false,
+              isTrashed: false,
             }
 
             if (file.type.startsWith('image/')) {
@@ -209,11 +215,7 @@ export function useHome() {
 
   const filteredFiles = computed(() => {
     return uploadedFiles.value.filter((file) => {
-      let favoriteMatch = true
-      if (activeButton.value === 'favorites') {
-        favoriteMatch = file.isFavorited
-      }
-      return nameMatch && typeMatch && favoriteMatch
+      return activeButton.value === 'trash' ? file.isTrashed : !file.isTrashed
     })
   })
 
@@ -249,5 +251,6 @@ export function useHome() {
     getFileIcon,
     formatFileSize,
     handleEmptyAreaDrop,
+    filteredFiles,
   }
 }

@@ -27,6 +27,7 @@ export default {
 
     <UploadedFiles
       :uploadedFiles="uploadedFiles"
+      @update-files="$emit('update-files', $event)"
       @file-selected="$emit('file-selected', $event)"
       @drag-over="$emit('drag-over', $event)"
       @drag-leave="$emit('drag-leave', $event)"

@@ -94,6 +94,13 @@ export default {
       return uploadedFiles.value.filter((file) => {
         const nameMatch = file.name.toLowerCase().includes(searchQuery.value.toLowerCase())
         let typeMatch = true
+        let trashedMatch = true
+
+        if (activeButton.value === 'trash') {
+          trashedMatch = file.isTrashed === true
+        } else {
+          trashedMatch = !file.isTrashed
+        }
 
         if (activeButton.value === 'gallery') {
           const galleryTypes = [...FILE_TYPE_MAPPING['Изображения'], ...FILE_TYPE_MAPPING['Видео']]
@@ -107,7 +114,7 @@ export default {
           favoriteMatch = file.isFavorited === true
         }
 
-        return nameMatch && typeMatch && favoriteMatch
+        return nameMatch && typeMatch && favoriteMatch && trashedMatch
       })
     })
 

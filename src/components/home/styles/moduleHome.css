@@ -506,6 +506,10 @@
   filter: none;
 }
 
+.home-uploaded-file-favorite {
+  background: transparent;
+}
+
 .context-menu {
   position: fixed;
   background: white;
