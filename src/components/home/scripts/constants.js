@@ -13,7 +13,7 @@ export const SEARCH_PANEL_CONSTANTS = {
   search: 'Поиск по облаку',
   button: 'Найти',
   file_type: 'Тип файла',
-  file_types: ['Изображения', 'Документы', 'Музыка', 'Видео', 'Папки', 'Архивы'],
+  file_types: ['Изображения', 'Документы', 'Музыка', 'Видео'],
 }
 
 export const UPLOADED_FILES_CONSTANTS = {

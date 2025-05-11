@@ -16,8 +16,10 @@ export default {
     isImage(fileType) {
       return ['image/png', 'image/jpeg', 'image/gif', 'image/webp'].includes(fileType)
     },
-    isText(fileType) {
-      return ['text/plain', 'application/json', 'application/xml'].includes(fileType)
+    isDocument(fileType) {
+      return ['application/pdf', 'text/plain', 'application/json', 'application/xml'].includes(
+        fileType,
+      )
     },
     isOfficeDocument(fileType) {
       return [
@@ -43,6 +45,10 @@ export default {
         reader.readAsText(file)
       })
     },
+    openFile(file) {
+      const fileURL = file.preview || URL.createObjectURL(file.file)
+      window.open(fileURL, '_blank')
+    },
   },
 }
 </script>
@@ -66,6 +72,7 @@ export default {
         @dragover.prevent="$emit('file-drag-over', { event: $event, index })"
         @dragleave="$emit('file-drag-leave', { event: $event, index })"
         @drop="$emit('file-drop', { event: $event, index })"
+        @dblclick="openFile(file)"
       >
         <div class="home-uploaded-file-handle"></div>
         <template v-if="isImage(file.type)">
@@ -75,7 +82,7 @@ export default {
             alt="File Content"
           />
         </template>
-        <template v-else-if="isText(file.type)">
+        <template v-else-if="isDocument(file.type)">
           <div class="home-uploaded-file-content preview">
             <pre>{{ file.content?.slice(0, 100) || 'No preview available' }}...</pre>
           </div>
