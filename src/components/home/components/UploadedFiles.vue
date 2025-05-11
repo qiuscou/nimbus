@@ -1,17 +1,23 @@
 <script>
 import { UPLOADED_FILES_CONSTANTS } from '../scripts/constants'
 import heart_red from '@/assets/elements/heart_red.svg'
+import heart_gray from '@/assets/elements/heart.svg'
 
 export default {
   name: 'UploadedFiles',
   props: {
-    uploadedFiles: Array,
+    uploadedFiles: {
+      type: Array,
+      required: true,
+    },
   },
   data() {
     return {
       uploadedFilesConstants: UPLOADED_FILES_CONSTANTS,
       editingIndex: null,
+      hoveredFile: null,
       heart_red,
+      heart_gray,
     }
   },
   methods: {
@@ -80,9 +86,22 @@ export default {
         @dragleave="$emit('file-drag-leave', { event: $event, index })"
         @drop="$emit('file-drop', { event: $event, index })"
         @dblclick="openFile(file)"
+        @mouseover="hoveredFile = index"
+        @mouseleave="hoveredFile = null"
       >
-        <div class="home-uploaded-file-favorite" @click.stop="toggleFavorite(index)">
-          <img :src="heart_red" class="heart-icon" :class="{ 'is-favorite': file.isFavorited }" />
+        <div class="home-uploaded-file-favorite">
+          <img
+            v-if="file.isFavorited"
+            :src="heart_red"
+            class="heart-icon is-favorite"
+            @click.stop="toggleFavorite(index)"
+          />
+          <img
+            v-else-if="hoveredFile === index"
+            :src="heart_gray"
+            class="heart-icon"
+            @click.stop="toggleFavorite(index)"
+          />
         </div>
         <template v-if="isImage(file.type)">
           <img

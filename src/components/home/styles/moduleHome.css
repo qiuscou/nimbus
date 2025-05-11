@@ -494,12 +494,14 @@
 .heart-icon {
   width: 20px;
   height: 20px;
-  cursor: pointer;
   transition: all 0.3s ease;
   filter: grayscale(100%);
 }
 
 .heart-icon.is-favorite {
   filter: none;
-  color: red;
+}
+
+.home-uploaded-file:hover .heart-icon {
+  filter: none;
 }
