@@ -79,6 +79,22 @@ export default {
 
       this.closeContextMenu()
     },
+    deletePermanently(index) {
+      const updatedFiles = [...this.uploadedFiles]
+      const file = updatedFiles[index]
+
+      // Освобождаем ресурсы превью
+      if (file.preview) {
+        URL.revokeObjectURL(file.preview)
+        console.log(`Revoked URL: ${file.preview}`)
+      }
+
+      // Полностью удаляем файл из массива
+      updatedFiles.splice(index, 1)
+
+      this.$emit('update-files', updatedFiles)
+      this.closeContextMenu()
+    },
     isImage(fileType) {
       return ['image/png', 'image/jpeg', 'image/gif', 'image/webp'].includes(fileType)
     },
@@ -86,6 +102,12 @@ export default {
       return ['application/pdf', 'text/plain', 'application/json', 'application/xml'].includes(
         fileType,
       )
+    },
+    restoreFromTrash(index) {
+      const updatedFiles = [...this.uploadedFiles]
+      updatedFiles[index].isTrashed = false
+      this.$emit('update-files', updatedFiles)
+      this.closeContextMenu()
     },
     isOfficeDocument(fileType) {
       return [
@@ -140,6 +162,20 @@ export default {
       <button class="context-menu-item" @click="handleRename">Переименовать</button>
       <button class="context-menu-item" @click="moveToTrash(contextMenu.targetIndex)">
         Переместить в корзину
+      </button>
+      <button
+        v-if="uploadedFiles[contextMenu.targetIndex]?.isTrashed"
+        class="context-menu-item"
+        @click="restoreFromTrash(contextMenu.targetIndex)"
+      >
+        Восстановить
+      </button>
+      <button
+        v-if="uploadedFiles[contextMenu.targetIndex]?.isTrashed"
+        class="context-menu-item danger"
+        @click="deletePermanently(contextMenu.targetIndex)"
+      >
+        Удалить
       </button>
     </div>
 
