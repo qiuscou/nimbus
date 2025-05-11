@@ -27,6 +27,7 @@
         @file-drag-leave="handleFileDragLeave"
         @file-drop="handleFileDrop"
         @open-file-dialog="openFileDialog"
+        @update-files="handleFilesUpdate"
       />
     </div>
 
@@ -115,6 +116,10 @@ export default {
       openFileDialogFromHook()
     }
 
+    const handleFilesUpdate = (newFiles) => {
+      uploadedFiles.value = newFiles
+    }
+
     return {
       activeButton,
       selectedFileType,
@@ -138,6 +143,7 @@ export default {
       getFileIcon,
       formatFileSize,
       fileInput,
+      handleFilesUpdate,
     }
   },
 }

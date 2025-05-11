@@ -18,9 +18,56 @@ export default {
       hoveredFile: null,
       heart_red,
       heart_gray,
+      selectedFiles: new Set(),
+      contextMenu: {
+        visible: false,
+        x: 0,
+        y: 0,
+        targetIndex: null,
+      },
     }
   },
   methods: {
+    handleLeftClick(event, index) {
+      if (event.ctrlKey) {
+        this.selectedFiles.has(index)
+          ? this.selectedFiles.delete(index)
+          : this.selectedFiles.add(index)
+      } else if (event.shiftKey && this.selectedFiles.size > 0) {
+        const last = Math.max(...this.selectedFiles)
+        const start = Math.min(index, last)
+        const end = Math.max(index, last)
+        for (let i = start; i <= end; i++) this.selectedFiles.add(i)
+      } else {
+        this.selectedFiles = new Set([index])
+      }
+      this.$forceUpdate()
+    },
+    showContextMenu(event, index) {
+      event.preventDefault()
+      if (!this.selectedFiles.has(index)) {
+        this.selectedFiles = new Set([index])
+      }
+      this.contextMenu = {
+        visible: true,
+        x: event.clientX,
+        y: event.clientY,
+        targetIndex: index,
+      }
+    },
+    closeContextMenu() {
+      this.contextMenu.visible = false
+    },
+    handleRename() {
+      this.editingIndex = this.contextMenu.targetIndex
+      this.closeContextMenu()
+    },
+    moveToTrash() {
+      const updatedFiles = this.uploadedFiles.filter((_, index) => !this.selectedFiles.has(index))
+      this.$emit('update-files', updatedFiles)
+      this.selectedFiles = new Set()
+      this.closeContextMenu()
+    },
     isImage(fileType) {
       return ['image/png', 'image/jpeg', 'image/gif', 'image/webp'].includes(fileType)
     },
@@ -63,11 +110,26 @@ export default {
       this.$emit('update-files', updatedFiles)
     },
   },
+  mounted() {
+    document.addEventListener('click', this.closeContextMenu)
+  },
+  beforeUnmount() {
+    document.removeEventListener('click', this.closeContextMenu)
+  },
 }
 </script>
 
 <template>
   <div class="home-files-container">
+    <div
+      v-if="contextMenu.visible"
+      class="context-menu"
+      :style="{ top: `${contextMenu.y}px`, left: `${contextMenu.x}px` }"
+    >
+      <button class="context-menu-item" @click="handleRename">Переименовать</button>
+      <button class="context-menu-item" @click="moveToTrash">Переместить в корзину</button>
+    </div>
+
     <slot name="actions"></slot>
     <div
       class="home-uploaded-files-wrapper"
@@ -80,7 +142,10 @@ export default {
         v-for="(file, index) in uploadedFiles"
         :key="index"
         class="home-uploaded-file"
+        :class="{ selected: selectedFiles.has(index) }"
         draggable="true"
+        @click.left="handleLeftClick($event, index)"
+        @contextmenu.prevent="showContextMenu($event, index)"
         @dragstart="$emit('file-drag-start', { event: $event, index })"
         @dragover.prevent="$emit('file-drag-over', { event: $event, index })"
         @dragleave="$emit('file-drag-leave', { event: $event, index })"
