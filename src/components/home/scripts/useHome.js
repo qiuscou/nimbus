@@ -51,6 +51,7 @@ export function useHome() {
           lastModified: file.lastModified,
           isFavorited: false,
           isTrashed: false,
+          uploadedAt: Date.now(),
         }
 
         if (file.type.startsWith('image/')) {
@@ -85,6 +86,7 @@ export function useHome() {
             lastModified: file.lastModified,
             isFavorited: false,
             isTrashed: false,
+            uploadedAt: Date.now(),
           }
 
           if (file.type.startsWith('image/')) {

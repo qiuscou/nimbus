@@ -92,6 +92,8 @@ export default {
 
     const filteredFiles = computed(() => {
       return uploadedFiles.value.filter((file) => {
+        const now = Date.now()
+        const isRecent = activeButton.value === 'recents' ? now - file.uploadedAt <= 60000 : true
         const nameMatch = file.name.toLowerCase().includes(searchQuery.value.toLowerCase())
         let typeMatch = true
         let trashedMatch = true
@@ -114,7 +116,7 @@ export default {
           favoriteMatch = file.isFavorited === true
         }
 
-        return nameMatch && typeMatch && favoriteMatch && trashedMatch
+        return nameMatch && typeMatch && favoriteMatch && trashedMatch && isRecent
       })
     })
 

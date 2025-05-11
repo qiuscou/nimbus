@@ -36,6 +36,9 @@ export default {
       if (button === 'favorites') {
         this.$emit('update-filter', { filter: 'favorites' })
       }
+      if (button === 'recents') {
+        this.$emit('update-filter', { filter: 'recents' })
+      }
       this.$emit('update:activeButton', button)
     },
     goToNewPage(page) {
