@@ -479,3 +479,27 @@
   border-color: #0056b3;
   box-shadow: 0 0 4px rgba(25, 124, 205, 0.5);
 }
+
+.home-uploaded-file-favorite {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  cursor: pointer;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+}
+
+.heart-icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  filter: grayscale(100%);
+}
+
+.heart-icon.is-favorite {
+  filter: none;
+  color: red;
+}

@@ -1,5 +1,6 @@
 <script>
 import { UPLOADED_FILES_CONSTANTS } from '../scripts/constants'
+import heart_red from '@/assets/elements/heart_red.svg'
 
 export default {
   name: 'UploadedFiles',
@@ -10,6 +11,7 @@ export default {
     return {
       uploadedFilesConstants: UPLOADED_FILES_CONSTANTS,
       editingIndex: null,
+      heart_red,
     }
   },
   methods: {
@@ -49,6 +51,11 @@ export default {
       const fileURL = file.preview || URL.createObjectURL(file.file)
       window.open(fileURL, '_blank')
     },
+    toggleFavorite(index) {
+      const updatedFiles = [...this.uploadedFiles]
+      updatedFiles[index].isFavorited = !updatedFiles[index].isFavorited
+      this.$emit('update-files', updatedFiles)
+    },
   },
 }
 </script>
@@ -74,7 +81,9 @@ export default {
         @drop="$emit('file-drop', { event: $event, index })"
         @dblclick="openFile(file)"
       >
-        <div class="home-uploaded-file-handle"></div>
+        <div class="home-uploaded-file-favorite" @click.stop="toggleFavorite(index)">
+          <img :src="heart_red" class="heart-icon" :class="{ 'is-favorite': file.isFavorited }" />
+        </div>
         <template v-if="isImage(file.type)">
           <img
             :src="file.preview || URL.createObjectURL(file)"

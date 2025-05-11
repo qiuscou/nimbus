@@ -33,6 +33,9 @@ export default {
   },
   methods: {
     handleButtonClick(button) {
+      if (button === 'favorites') {
+        this.$emit('update-filter', { filter: 'favorites' })
+      }
       this.$emit('update:activeButton', button)
     },
     goToNewPage(page) {

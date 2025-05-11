@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import image from '@/assets/elements/image.svg'
 import data from '@/assets/elements/data.svg'
@@ -206,6 +206,16 @@ export function useHome() {
 
     return data
   }
+
+  const filteredFiles = computed(() => {
+    return uploadedFiles.value.filter((file) => {
+      let favoriteMatch = true
+      if (activeButton.value === 'favorites') {
+        favoriteMatch = file.isFavorited
+      }
+      return nameMatch && typeMatch && favoriteMatch
+    })
+  })
 
   watch(router.currentRoute, (to) => {
     isHomePage.value = to.path === '/'

@@ -81,7 +81,6 @@ export default {
     const fileInput = ref(null)
     const searchQuery = ref('')
 
-    // Добавляем вотчеры для синхронизации состояний
     watch(activeButton, (newVal) => {
       if (newVal === 'gallery') selectedFileType.value = ''
     })
@@ -102,7 +101,12 @@ export default {
           typeMatch = FILE_TYPE_MAPPING[selectedFileType.value]?.includes(file.type)
         }
 
-        return nameMatch && typeMatch
+        let favoriteMatch = true
+        if (activeButton.value === 'favorites') {
+          favoriteMatch = file.isFavorited === true
+        }
+
+        return nameMatch && typeMatch && favoriteMatch
       })
     })
 
