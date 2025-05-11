@@ -83,13 +83,11 @@ export default {
       const updatedFiles = [...this.uploadedFiles]
       const file = updatedFiles[index]
 
-      // Освобождаем ресурсы превью
       if (file.preview) {
         URL.revokeObjectURL(file.preview)
         console.log(`Revoked URL: ${file.preview}`)
       }
 
-      // Полностью удаляем файл из массива
       updatedFiles.splice(index, 1)
 
       this.$emit('update-files', updatedFiles)
