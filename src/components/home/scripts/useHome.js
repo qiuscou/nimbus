@@ -211,6 +211,14 @@ export function useHome() {
     isHomePage.value = to.path === '/'
   })
 
+  watch(activeButton, (newVal) => {
+    if (newVal !== 'gallery') selectedFileType.value = ''
+  })
+
+  watch(selectedFileType, (newVal) => {
+    if (newVal) activeButton.value = ''
+  })
+
   return {
     activeButton,
     selectedFileType,

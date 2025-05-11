@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import SidePanel from './SidePanel.vue'
 import SearchPanel from './SearchPanel.vue'
 import FileUploader from './FileUploader.vue'
@@ -79,24 +79,37 @@ export default {
     } = useHome()
 
     const fileInput = ref(null)
-
-    const openFileDialog = () => {
-      if (fileInput.value) {
-        fileInput.value.click()
-      }
-      openFileDialogFromHook()
-    }
-
     const searchQuery = ref('')
+
+    // Добавляем вотчеры для синхронизации состояний
+    watch(activeButton, (newVal) => {
+      if (newVal === 'gallery') selectedFileType.value = ''
+    })
+
+    watch(selectedFileType, (newVal) => {
+      if (newVal) activeButton.value = ''
+    })
+
     const filteredFiles = computed(() => {
       return uploadedFiles.value.filter((file) => {
         const nameMatch = file.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-        const typeMatch = selectedFileType.value
-          ? FILE_TYPE_MAPPING[selectedFileType.value]?.includes(file.type)
-          : true
+        let typeMatch = true
+
+        if (activeButton.value === 'gallery') {
+          const galleryTypes = [...FILE_TYPE_MAPPING['Изображения'], ...FILE_TYPE_MAPPING['Видео']]
+          typeMatch = galleryTypes.includes(file.type)
+        } else if (selectedFileType.value) {
+          typeMatch = FILE_TYPE_MAPPING[selectedFileType.value]?.includes(file.type)
+        }
+
         return nameMatch && typeMatch
       })
     })
+
+    const openFileDialog = () => {
+      if (fileInput.value) fileInput.value.click()
+      openFileDialogFromHook()
+    }
 
     return {
       activeButton,
