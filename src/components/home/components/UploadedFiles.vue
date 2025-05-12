@@ -79,20 +79,43 @@ export default {
 
       this.closeContextMenu()
     },
-    deletePermanently(index) {
+    async deletePermanently(index) {
       const updatedFiles = [...this.uploadedFiles]
       const file = updatedFiles[index]
+
+      if (!file || !file.filename) {
+        console.error('Файл отсутствует или не имеет имени:', file)
+        return
+      }
+
+      const filename = encodeURIComponent(file.filename)
 
       if (file.preview) {
         URL.revokeObjectURL(file.preview)
         console.log(`Revoked URL: ${file.preview}`)
       }
 
-      updatedFiles.splice(index, 1)
+      try {
+        const response = await fetch(`http://localhost:3001/api/files/${filename}`, {
+          method: 'DELETE',
+        })
 
-      this.$emit('update-files', updatedFiles)
-      this.closeContextMenu()
+        if (response.status === 404) {
+          console.warn(`Файл с именем ${file.filename} не найден на сервере.`)
+          updatedFiles.splice(index, 1) // удаляем файл из списка, даже если его нет на сервере
+        } else if (!response.ok) {
+          throw new Error(`Ошибка удаления: ${response.status}`)
+        } else {
+          console.log(`Файл ${file.filename} успешно удалён с сервера.`)
+          updatedFiles.splice(index, 1)
+        }
+
+        this.$emit('update-files', updatedFiles)
+      } catch (error) {
+        console.error('Ошибка при удалении файла с сервера:', error)
+      }
     },
+
     isImage(fileType) {
       return ['image/png', 'image/jpeg', 'image/gif', 'image/webp'].includes(fileType)
     },
@@ -253,13 +276,7 @@ export default {
         </span>
       </div>
     </div>
-    <div
-      v-else
-      class="home-empty-state"
-      @dragover="$emit('drag-over', $event)"
-      @dragleave="$emit('drag-leave', $event)"
-      @drop.prevent="$emit('empty-area-drop', $event)"
-    >
+    <div v-else class="home-empty-state">
       <p>{{ uploadedFilesConstants.empty_state }}</p>
     </div>
   </div>

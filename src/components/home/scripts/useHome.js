@@ -55,6 +55,8 @@ export function useHome() {
 
       const data = await response.json()
       console.log('Файлы загружены:', data.files)
+
+      await loadFilesFromServer()
     } catch (error) {
       console.error('Ошибка при загрузке файлов:', error)
     }
@@ -248,6 +250,7 @@ export function useHome() {
       const restoredFiles = data.files.map((file) => ({
         file: null,
         name: file.originalName,
+        filename: file.filename, // важно сохранить это поле!
         type: '',
         size: 0,
         lastModified: 0,
@@ -274,7 +277,6 @@ export function useHome() {
         throw new Error(`Ошибка удаления: ${response.status}`)
       }
 
-      // Удаляем файл из списка на клиенте
       uploadedFiles.value = uploadedFiles.value.filter((f) => f.filename !== file.filename)
     } catch (error) {
       console.error('Ошибка при удалении файла:', error)
