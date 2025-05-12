@@ -51,13 +51,24 @@
 .filterSelect {
   margin-top: 0.5rem;
   padding: 0.5rem;
-  border: 1px solid #e0e0e0;
+  color: #2c2d2e;
+  background: #ffffff;
+  border: 1px solid #8c8e93;
   border-radius: 4px;
   font-family: 'Manrope Regular', sans-serif;
   font-size: 0.9rem;
   width: 100%;
   box-sizing: border-box;
   height: 2.5rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.filterInput:focus,
+.filterSelect:focus {
+  border-color: #197ccd;
+  box-shadow: 0 0 4px rgba(25, 124, 205, 0.5);
 }
 
 .filterButton,

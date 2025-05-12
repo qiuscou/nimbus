@@ -71,14 +71,24 @@ body {
 
 .signupInput {
   box-sizing: border-box;
-  border: #d0cece 0.1rem solid;
-  font-family: 'Manrope Light', sans-serif;
+  color: #2c2d2e;
+  background: #ffffff;
+  border: 1px solid #8c8e93;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+  font-family: 'Manrope Regular', sans-serif;
   font-size: 1rem;
   border-radius: 0.85rem;
   padding: 0.75rem;
   width: 18.5rem;
   height: 3.35rem;
   margin: 0.5rem 0;
+}
+
+.signupInput:focus {
+  border-color: #197ccd;
+  box-shadow: 0 0 4px rgba(25, 124, 205, 0.5);
 }
 
 .signupText {
