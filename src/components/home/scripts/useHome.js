@@ -1,4 +1,4 @@
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import image from '@/assets/elements/image.svg'
 import data from '@/assets/elements/data.svg'
@@ -39,7 +39,28 @@ export function useHome() {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
   }
 
-  const handleFileSelection = (event) => {
+  const uploadToServer = async (files) => {
+    const formData = new FormData()
+    files.forEach((file) => formData.append('files', file.file))
+
+    try {
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (!response.ok) {
+        throw new Error(`Ошибка: ${response.status}`)
+      }
+
+      const data = await response.json()
+      console.log('Файлы загружены:', data.files)
+    } catch (error) {
+      console.error('Ошибка при загрузке файлов:', error)
+    }
+  }
+
+  const handleFileSelection = async (event) => {
     const files = Array.from(event.target.files)
     if (files.length > 0) {
       const newFiles = files.map((file) => {
@@ -61,11 +82,12 @@ export function useHome() {
         return fileData
       })
       uploadedFiles.value = [...uploadedFiles.value, ...newFiles]
+      await uploadToServer(newFiles)
     }
     event.target.value = ''
   }
 
-  const handleDrop = (event) => {
+  const handleDrop = async (event) => {
     event.preventDefault()
     event.stopPropagation()
     isDragging.value = false
@@ -100,6 +122,7 @@ export function useHome() {
 
     if (files.length > 0) {
       uploadedFiles.value = [...uploadedFiles.value, ...files]
+      await uploadToServer(files)
     }
   }
 
@@ -134,7 +157,7 @@ export function useHome() {
     event.currentTarget.classList.remove('dragover')
   }
 
-  const handleFileDrop = (event, targetIndex) => {
+  const handleFileDrop = async (event, targetIndex) => {
     event.preventDefault()
     event.currentTarget.classList.remove('dragover')
 
@@ -167,6 +190,7 @@ export function useHome() {
               lastModified: file.lastModified,
               isFavorited: false,
               isTrashed: false,
+              uploadedAt: Date.now(),
             }
 
             if (file.type.startsWith('image/')) {
@@ -184,6 +208,7 @@ export function useHome() {
         } else {
           uploadedFiles.value = [...uploadedFiles.value, ...newFiles]
         }
+        await uploadToServer(newFiles)
       }
     }
   }
@@ -215,6 +240,47 @@ export function useHome() {
     return data
   }
 
+  const loadFilesFromServer = async () => {
+    try {
+      const response = await fetch('/api/files')
+      const data = await response.json()
+
+      const restoredFiles = data.files.map((file) => ({
+        file: null,
+        name: file.originalName,
+        type: '',
+        size: 0,
+        lastModified: 0,
+        isFavorited: false,
+        isTrashed: false,
+        uploadedAt: Date.now(),
+        preview: file.url,
+        url: file.url,
+      }))
+
+      uploadedFiles.value = restoredFiles
+    } catch (error) {
+      console.error('Ошибка при загрузке списка файлов:', error)
+    }
+  }
+
+  const deleteFile = async (file) => {
+    try {
+      const response = await fetch(`/api/files/${file.filename}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        throw new Error(`Ошибка удаления: ${response.status}`)
+      }
+
+      // Удаляем файл из списка на клиенте
+      uploadedFiles.value = uploadedFiles.value.filter((f) => f.filename !== file.filename)
+    } catch (error) {
+      console.error('Ошибка при удалении файла:', error)
+    }
+  }
+
   const filteredFiles = computed(() => {
     return uploadedFiles.value.filter((file) => {
       return activeButton.value === 'trash' ? file.isTrashed : !file.isTrashed
@@ -231,6 +297,10 @@ export function useHome() {
 
   watch(selectedFileType, (newVal) => {
     if (newVal) activeButton.value = ''
+  })
+
+  onMounted(() => {
+    loadFilesFromServer()
   })
 
   return {
@@ -254,5 +324,6 @@ export function useHome() {
     formatFileSize,
     handleEmptyAreaDrop,
     filteredFiles,
+    deleteFile,
   }
 }
