@@ -24,7 +24,6 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue'
 import BlueActions from './BlueActions.vue'
 import UploadedFiles from './UploadedFiles.vue'
 

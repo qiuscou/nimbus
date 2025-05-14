@@ -86,22 +86,15 @@ watch(selectedFileType, (val) => {
 })
 
 const filteredFiles = computed(() => {
-  const now = Date.now()
+  const galleryTypes = [...FILE_TYPE_MAPPING['Изображения'], ...FILE_TYPE_MAPPING['Видео']]
   return uploadedFiles.value.filter((file) => {
-    const nameMatch = file.name.toLowerCase().includes(searchQuery.value.toLowerCase())
     let typeMatch = true
-    const trashedMatch = activeButton.value === 'trash' ? file.isTrashed : !file.isTrashed
-    const favoriteMatch = activeButton.value === 'favorites' ? file.isFavorited : true
-    const recentMatch = activeButton.value === 'recents' ? now - file.uploadedAt <= 60000 : true
-
     if (activeButton.value === 'gallery') {
-      const galleryTypes = [...FILE_TYPE_MAPPING['Изображения'], ...FILE_TYPE_MAPPING['Видео']]
       typeMatch = galleryTypes.includes(file.type)
     } else if (selectedFileType.value) {
       typeMatch = FILE_TYPE_MAPPING[selectedFileType.value]?.includes(file.type)
     }
-
-    return nameMatch && typeMatch && trashedMatch && favoriteMatch && recentMatch
+    return typeMatch
   })
 })
 

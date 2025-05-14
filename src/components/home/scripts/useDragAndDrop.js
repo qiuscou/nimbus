@@ -18,7 +18,13 @@ export function useDragAndDrop(uploadToServer, uploadedFiles) {
     e.preventDefault()
     isDragging.value = false
     const items = Array.from(e.dataTransfer.items)
-    const files = items.filter((i) => i.kind === 'file').map((i) => createFileData(i.getAsFile()))
+
+    // Получаем настоящие File объекты
+    const files = items
+      .filter((i) => i.kind === 'file')
+      .map((i) => i.getAsFile())
+      .map((file) => createFileData(file)) // Передаем File в createFileData
+
     if (files.length) {
       uploadedFiles.value.push(...files)
       await uploadToServer(files)
@@ -47,6 +53,7 @@ export function useDragAndDrop(uploadToServer, uploadedFiles) {
       const [m] = list.splice(srcIndex, 1)
       list.splice(targetIndex ?? list.length, 0, m)
       uploadedFiles.value = list
+      await uploadToServer(list) // Добавлено обновление на сервере
     } else {
       await handleDrop(e)
     }

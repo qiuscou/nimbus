@@ -4,6 +4,7 @@
       <img :src="logo" alt="logo" class="home-logo" />
     </div>
     <div class="home-panel-stack">
+      <!-- Все файлы -->
       <div class="home-container-cloud">
         <div class="home-container-buttons">
           <button
@@ -12,10 +13,11 @@
             :class="{ 'is-active': activeButton === 'all_files' }"
             @click="handleButtonClick('all_files')"
           >
-            <img :src="icons.chevron_right" alt="chevron right" class="home-icon" />
+            <img :src="icons.chevron_right" alt="all files" class="home-icon" />
             <span>{{ labels.all_files }}</span>
           </button>
         </div>
+        <!-- Галерея (только изображения) -->
         <div class="home-container-buttons">
           <button
             id="home-button-gallery"
@@ -27,6 +29,7 @@
             <span>{{ labels.gallery }}</span>
           </button>
         </div>
+        <!-- Избранное -->
         <div class="home-container-buttons">
           <button
             id="home-button-favorites"
@@ -38,6 +41,7 @@
             <span>{{ labels.favorites }}</span>
           </button>
         </div>
+        <!-- Недавние -->
         <div class="home-container-buttons">
           <button
             id="home-button-recents"
@@ -49,6 +53,7 @@
             <span>{{ labels.recents }}</span>
           </button>
         </div>
+        <!-- Корзина -->
         <div class="home-container-buttons">
           <button
             id="home-button-trash"
@@ -64,6 +69,7 @@
 
       <div class="home-divider"></div>
 
+      <!-- Профиль / Помощь / Тариф -->
       <div class="home-panel-user">
         <div class="home-container-buttons">
           <button
@@ -99,14 +105,12 @@
           </button>
         </div>
       </div>
-
       <div class="home-divider"></div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, reactive } from 'vue'
 import logo from '@/assets/logo/logo.svg'
 import chevron_right from '@/assets/elements/chevron_right.svg'
 import image from '@/assets/elements/image.svg'
@@ -116,7 +120,7 @@ import trash_empty from '@/assets/elements/trash_empty.svg'
 import user_circle from '@/assets/elements/user_circle.svg'
 import headphones from '@/assets/elements/headphones.svg'
 import data from '@/assets/elements/data.svg'
-import { SIDE_PANEL_CONSTANTS } from '../scripts/constants'
+import { SIDE_PANEL_CONSTANTS, SEARCH_PANEL_CONSTANTS } from '../scripts/constants'
 
 const props = defineProps({
   activeButton: {
@@ -125,7 +129,13 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['update-filter', 'update:activeButton', 'go-to-new-page', 'go-to-tariff'])
+const emit = defineEmits([
+  'update:activeButton',
+  'update:selectedFileType',
+  'update:searchQuery',
+  'go-to-new-page',
+  'go-to-tariff',
+])
 
 const icons = {
   chevron_right,
@@ -137,15 +147,17 @@ const icons = {
   headphones,
   data,
 }
-
 const labels = SIDE_PANEL_CONSTANTS
 
 function handleButtonClick(button) {
-  if (button === 'favorites') {
-    emit('update-filter', { filter: 'favorites' })
-  }
-  if (button === 'recents') {
-    emit('update-filter', { filter: 'recents' })
+  // при смене категории сбрасываем поиск
+  emit('update:searchQuery', '')
+  if (button === 'gallery') {
+    // Галерея = только изображения
+    emit('update:selectedFileType', SEARCH_PANEL_CONSTANTS.file_types[0] || '')
+  } else {
+    // остальные категории — сброс фильтра по типу
+    emit('update:selectedFileType', '')
   }
   emit('update:activeButton', button)
 }
@@ -159,4 +171,4 @@ function goToTariff() {
 }
 </script>
 
-<style src="../styles/moduleHome.css" scoped></style>
+<style scoped src="../styles/moduleHome.css"></style>

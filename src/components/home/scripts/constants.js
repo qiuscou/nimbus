@@ -22,7 +22,7 @@ export const UPLOADED_FILES_CONSTANTS = {
 }
 
 export const FILE_TYPE_MAPPING = {
-  Изображения: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
+  Изображения: ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml'],
   Документы: [
     'application/pdf',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Word (docx)

@@ -6,16 +6,19 @@
         type="text"
         :placeholder="searchPanelHomeData.search"
         :value="searchQuery"
-        @input="handleSearchInput"
+        @input.lazy="handleSearchInput"
         class="home-input-search"
       />
       <div class="home-custom-select-wrapper">
         <select
           id="home-file-type"
           :value="selectedFileType"
-          @change="(e) => emit('update:selectedFileType', e.target.value)"
+          @change="handleTypeChange"
+          class="home-custom-select"
         >
-          <option value="" disabled hidden>{{ searchPanelHomeData.file_type }}</option>
+          <option value="" disabled hidden>
+            {{ searchPanelHomeData.file_type }}
+          </option>
           <option v-for="type in searchPanelHomeData.file_types" :key="type" :value="type">
             {{ type }}
           </option>
@@ -30,7 +33,6 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue'
 import magnifier from '@/assets/elements/magnifier.svg'
 import chevron_down from '@/assets/elements/chevron_down.svg'
 import { SEARCH_PANEL_CONSTANTS } from '../scripts/constants'
@@ -52,6 +54,10 @@ const searchPanelHomeData = SEARCH_PANEL_CONSTANTS
 
 function handleSearchInput(e) {
   emit('update:searchQuery', e.target.value)
+}
+
+function handleTypeChange(e) {
+  emit('update:selectedFileType', e.target.value)
 }
 </script>
 

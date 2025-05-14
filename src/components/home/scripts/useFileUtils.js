@@ -24,9 +24,13 @@ export function createFileData(file) {
     isTrashed: false,
     uploadedAt: Date.now(),
   }
-  if (file.type.startsWith('image/')) {
-    base.preview = URL.createObjectURL(file)
+
+  if (file instanceof File || file instanceof Blob) {
+    if (file.type.startsWith('image/')) {
+      base.preview = URL.createObjectURL(file)
+    }
   }
+
   return base
 }
 
