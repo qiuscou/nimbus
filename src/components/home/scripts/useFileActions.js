@@ -4,15 +4,6 @@ export function useFileActions(loadFilesFromServer) {
     await loadFilesFromServer()
   }
 
-  const restoreFiles = async (filenames) => {
-    await fetch('/api/files/restore', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filenames }),
-    })
-    await loadFilesFromServer()
-  }
-
   const toggleFavorite = async (file) => {
     const res = await fetch('/api/files/favorite', {
       method: 'POST',
@@ -21,7 +12,45 @@ export function useFileActions(loadFilesFromServer) {
     })
     const { isFavorited } = await res.json()
     file.isFavorited = isFavorited
+    const states = JSON.parse(localStorage.getItem('fileStates') || '{}')
+    states[file.filename] = states[file.filename] || {}
+    states[file.filename].isFavorited = file.isFavorited
+    localStorage.setItem('fileStates', JSON.stringify(states))
   }
 
-  return { deleteFile, restoreFiles, toggleFavorite }
+  const moveToTrash = async (file) => {
+    const res = await fetch('/api/files/trash', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        filename: file.filename,
+        isTrashed: true,
+      }),
+    })
+    const { isTrashed } = await res.json()
+    file.isTrashed = isTrashed
+    const states = JSON.parse(localStorage.getItem('fileStates') || '{}')
+    states[file.filename] = states[file.filename] || {}
+    states[file.filename].isFavorited = file.isFavorited
+    localStorage.setItem('fileStates', JSON.stringify(states))
+  }
+
+  const restoreFromTrash = async (file) => {
+    const res = await fetch('/api/files/trash', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        filename: file.filename,
+        isTrashed: false,
+      }),
+    })
+    const { isTrashed } = await res.json()
+    file.isTrashed = isTrashed
+    const states = JSON.parse(localStorage.getItem('fileStates') || '{}')
+    states[file.filename] = states[file.filename] || {}
+    states[file.filename].isFavorited = file.isFavorited
+    localStorage.setItem('fileStates', JSON.stringify(states))
+  }
+
+  return { restoreFromTrash, moveToTrash, toggleFavorite, deleteFile }
 }

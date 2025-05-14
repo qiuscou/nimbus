@@ -10,6 +10,10 @@ export default {
       type: Array,
       required: true,
     },
+    activeCategory: {
+      type: String,
+      required: true, // Категория, выбранная в родительском компоненте
+    },
   },
   data() {
     return {
@@ -26,6 +30,25 @@ export default {
         targetIndex: null,
       },
     }
+  },
+  computed: {
+    filteredFiles() {
+      const { activeCategory } = this
+
+      // Фильтрация файлов по категориям
+      return this.uploadedFiles.filter((file) => {
+        switch (activeCategory) {
+          case 'favorites':
+            return file.isFavorited && !file.isTrashed
+          case 'trash':
+            return file.isTrashed
+          case 'gallery':
+            return file.type.startsWith('image/') && !file.isTrashed
+          default:
+            return !file.isTrashed // Все файлы, не в корзине
+        }
+      })
+    },
   },
   methods: {
     handleLeftClick(event, index) {
@@ -235,13 +258,13 @@ export default {
     <slot name="actions"></slot>
     <div
       class="home-uploaded-files-wrapper"
-      v-if="uploadedFiles.length"
+      v-if="filteredFiles.length"
       @dragover="$emit('drag-over', $event)"
       @dragleave="$emit('drag-leave', $event)"
       @drop.prevent="$emit('empty-area-drop', $event)"
     >
       <div
-        v-for="(file, index) in uploadedFiles"
+        v-for="(file, index) in filteredFiles"
         :key="index"
         class="home-uploaded-file"
         :class="{ selected: selectedFiles.has(index) }"

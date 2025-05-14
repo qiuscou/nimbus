@@ -45,12 +45,20 @@ const filteredFiles = computed(() => {
   const galleryTypes = [...FILE_TYPE_MAPPING['Изображения'], ...FILE_TYPE_MAPPING['Видео']]
   return uploadedFiles.value.filter((file) => {
     let typeMatch = true
+    let categoryMatch = true
+
+    // Фильтрация по категории
     if (activeButton.value === 'gallery') {
       typeMatch = galleryTypes.includes(file.type)
+    } else if (activeButton.value === 'favorites') {
+      categoryMatch = file.isFavorited && !file.isTrashed
+    } else if (activeButton.value === 'trash') {
+      categoryMatch = file.isTrashed
     } else if (selectedFileType.value) {
       typeMatch = FILE_TYPE_MAPPING[selectedFileType.value]?.includes(file.type)
     }
-    return typeMatch
+
+    return typeMatch && categoryMatch
   })
 })
 
@@ -92,6 +100,7 @@ function onFilesUpdate(files) {
       />
 
       <FileUploader
+        :activeButton="activeButton"
         :uploadedFiles="filteredFiles"
         :isDragging="isDragging"
         @file-selected="handleFileSelection"

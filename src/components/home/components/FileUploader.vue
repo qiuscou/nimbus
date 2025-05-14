@@ -11,6 +11,10 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  activeButton: {
+    type: String,
+    required: true,
+  },
 })
 
 const emit = defineEmits([
@@ -70,6 +74,7 @@ function onFileDrop(event) {
 
     <UploadedFiles
       :uploadedFiles="uploadedFiles"
+      :activeCategory="activeButton"
       @update-files="onUpdateFiles"
       @file-selected="onFileSelected"
       @drag-over="onDragOver"

@@ -8,13 +8,15 @@ export function useFileUpload() {
     const res = await fetch('/api/files')
     const { files } = await res.json()
 
+    const savedStates = JSON.parse(localStorage.getItem('fileStates') || '{}')
+
     uploadedFiles.value = files.map((f) => {
       const dummyFile = new File([], f.originalName, {
-        type: f.type || getMimeTypeFromName(f.originalName),
+        type: f.type,
         lastModified: f.lastModified || Date.now(),
       })
 
-      return {
+      const base = {
         ...createFileData(dummyFile),
         filename: f.filename,
         isFavorited: f.isFavorited,
@@ -22,6 +24,13 @@ export function useFileUpload() {
         preview: f.url,
         url: f.url,
       }
+
+      if (savedStates[f.filename]) {
+        base.isFavorited = savedStates[f.filename].isFavorited
+        base.isTrashed = savedStates[f.filename].isTrashed
+      }
+
+      return base
     })
   }
 

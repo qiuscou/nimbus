@@ -38,13 +38,10 @@ const icons = {
 const labels = SIDE_PANEL_CONSTANTS
 
 function handleButtonClick(button) {
-  // при смене категории сбрасываем поиск
   emit('update:searchQuery', '')
   if (button === 'gallery') {
-    // Галерея = только изображения
     emit('update:selectedFileType', SEARCH_PANEL_CONSTANTS.file_types[0] || '')
   } else {
-    // остальные категории — сброс фильтра по типу
     emit('update:selectedFileType', '')
   }
   emit('update:activeButton', button)

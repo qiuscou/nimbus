@@ -16,54 +16,56 @@ export function useHome() {
   const selectedFileType = ref('')
   const searchTerm = ref('')
 
-  onMounted(() => {
-    const saved = localStorage.getItem('activeButton')
-    if (saved) {
-      activeButton.value = saved
-    }
+  onMounted(async () => {
+    const savedCategory = localStorage.getItem('activeButton')
+    if (savedCategory) activeButton.value = savedCategory
+
+    await loadFilesFromServer()
+
+    const savedStates = JSON.parse(localStorage.getItem('fileStates') || '{}')
+    uploadedFiles.value.forEach((f) => {
+      if (savedStates[f.filename]) {
+        f.isFavorited = savedStates[f.filename].isFavorited
+        f.isTrashed = savedStates[f.filename].isTrashed
+      }
+    })
   })
 
   const filteredFiles = computed(() => {
-    let files = uploadedFiles.value.filter((f) => {
+    const btn = activeButton.value
+    // если пришла русская метка — переводим в ключ
+    const key = PANEL_KEYS.includes(btn) ? btn : LABEL_TO_KEY[btn]
+
+    return uploadedFiles.value.filter((f) => {
+      // 1) поиск
       if (searchTerm.value && !f.name.toLowerCase().includes(searchTerm.value.toLowerCase())) {
         return false
       }
 
-      if (activeButton.value === 'favorites' && !f.isFavorited) {
-        return false
-      }
+      // 2) фильтруем по категории
+      switch (key) {
+        case 'favorites':
+          return f.isFavorited && !f.isTrashed
 
-      if (f.isTrashed && activeButton.value !== 'trash') {
-        return false
-      }
+        case 'trash':
+          return f.isTrashed
 
-      if (activeButton.value === 'trash' && !f.isTrashed) {
-        return false
-      }
+        case 'gallery':
+          if (selectedFileType.value) {
+            const allowed = FILE_TYPE_MAPPING[selectedFileType.value] || []
+            return allowed.includes(f.type.toLowerCase()) && !f.isTrashed
+          }
+          return f.type.startsWith('image/') && !f.isTrashed
 
-      if (activeButton.value === 'gallery') {
-        const allowed = FILE_TYPE_MAPPING[selectedFileType.value] || []
-        if (selectedFileType.value && !allowed.includes(f.type.toLowerCase())) {
-          return false
-        }
+        default:
+          return !f.isTrashed // фильтруем по файлам, которые не в корзине
       }
-
-      return true
     })
-
-    files.sort((a, b) => {
-      const typeCmp = a.type.localeCompare(b.type)
-      return typeCmp !== 0 ? typeCmp : a.name.localeCompare(b.name)
-    })
-
-    return files
   })
 
   watch(activeButton, (newBtn) => {
     localStorage.setItem('activeButton', newBtn)
-    if (newBtn !== 'gallery') {
-      selectedFileType.value = ''
-    }
+    if (newBtn !== 'gallery') selectedFileType.value = ''
   })
 
   watch(selectedFileType, (newType) => {
@@ -72,8 +74,22 @@ export function useHome() {
     }
   })
 
+  watch(
+    uploadedFiles,
+    (files) => {
+      const states = files.reduce((acc, f) => {
+        acc[f.filename] = { isFavorited: f.isFavorited, isTrashed: f.isTrashed }
+        return acc
+      }, {})
+      localStorage.setItem('fileStates', JSON.stringify(states))
+    },
+    { deep: true },
+  )
+
   watch(searchTerm, (term) => {
-    if (term && activeButton.value !== '') {
+    const shouldReset = ['all_files', 'gallery', 'recents'].includes(activeButton.value)
+
+    if (term && shouldReset) {
       activeButton.value = ''
     }
   })
