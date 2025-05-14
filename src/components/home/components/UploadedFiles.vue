@@ -62,21 +62,20 @@ export default {
       this.editingIndex = this.contextMenu.targetIndex
       this.closeContextMenu()
     },
-    moveToTrash(index) {
+    moveToTrash() {
       const updatedFiles = [...this.uploadedFiles]
-      const file = updatedFiles[index]
-
-      updatedFiles[index].preview = null
-
-      if (file.preview) {
-        URL.revokeObjectURL(file.preview)
-        console.log(`Revoked URL: ${file.preview}`)
-      }
-
-      updatedFiles[index].isTrashed = true
-
+      const indexes = Array.from(this.selectedFiles).sort((a, b) => b - a)
+      indexes.forEach((i) => {
+        const file = updatedFiles[i]
+        if (file.preview) {
+          URL.revokeObjectURL(file.preview)
+          console.log(`Revoked URL: ${file.preview}`)
+        }
+        updatedFiles[i].preview = null
+        updatedFiles[i].isTrashed = true
+      })
       this.$emit('update-files', updatedFiles)
-
+      this.selectedFiles.clear()
       this.closeContextMenu()
     },
     async deletePermanently(index) {
@@ -102,7 +101,7 @@ export default {
 
         if (response.status === 404) {
           console.warn(`Файл с именем ${file.filename} не найден на сервере.`)
-          updatedFiles.splice(index, 1) // удаляем файл из списка, даже если его нет на сервере
+          updatedFiles.splice(index, 1)
         } else if (!response.ok) {
           throw new Error(`Ошибка удаления: ${response.status}`)
         } else {
@@ -123,6 +122,38 @@ export default {
       return ['application/pdf', 'text/plain', 'application/json', 'application/xml'].includes(
         fileType,
       )
+    },
+    async downloadFile(index) {
+      const file = this.uploadedFiles[index]
+      let blobSource
+
+      if (file.url) {
+        const res = await fetch(file.url, { credentials: 'include' })
+        if (!res.ok) {
+          console.error('Ошибка HTTP при скачивании:', res.status)
+          this.closeContextMenu()
+          return
+        }
+        blobSource = await res.blob()
+      } else if (file.raw || file.file) {
+        blobSource = file.raw || file.file
+      } else {
+        console.error('Нет ни url, ни объекта File для скачивания:', file)
+        this.closeContextMenu()
+        return
+      }
+
+      console.log('Тип blob:', blobSource.type, 'Размер:', blobSource.size)
+
+      const href = URL.createObjectURL(blobSource)
+      const link = document.createElement('a')
+      link.href = href
+      link.download = file.name
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(href)
+      this.closeContextMenu()
     },
     restoreFromTrash(index) {
       const updatedFiles = [...this.uploadedFiles]
@@ -181,9 +212,10 @@ export default {
       :style="{ top: `${contextMenu.y}px`, left: `${contextMenu.x}px` }"
     >
       <button class="context-menu-item" @click="handleRename">Переименовать</button>
-      <button class="context-menu-item" @click="moveToTrash(contextMenu.targetIndex)">
-        Переместить в корзину
+      <button class="context-menu-item" @click="downloadFile(contextMenu.targetIndex)">
+        Скачать
       </button>
+      <button class="context-menu-item" @click="moveToTrash">Переместить в корзину</button>
       <button
         v-if="uploadedFiles[contextMenu.targetIndex]?.isTrashed"
         class="context-menu-item"

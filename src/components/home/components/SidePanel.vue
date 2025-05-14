@@ -1,56 +1,3 @@
-<script>
-import logo from '@/assets/logo/logo.svg'
-import chevron_right from '@/assets/elements/chevron_right.svg'
-import image from '@/assets/elements/image.svg'
-import heart from '@/assets/elements/heart.svg'
-import clock from '@/assets/elements/clock.svg'
-import trash_empty from '@/assets/elements/trash_empty.svg'
-import user_circle from '@/assets/elements/user_circle.svg'
-import headphones from '@/assets/elements/headphones.svg'
-import data from '@/assets/elements/data.svg'
-import { SIDE_PANEL_CONSTANTS } from '../scripts/constants'
-
-export default {
-  name: 'SidePanel',
-  props: {
-    activeButton: String,
-  },
-  data() {
-    return {
-      logo,
-      stackPanelHomeData: {
-        ...SIDE_PANEL_CONSTANTS,
-        chevron_right,
-        image,
-        heart,
-        clock,
-        trash_empty,
-        user_circle,
-        headphones,
-        data,
-      },
-    }
-  },
-  methods: {
-    handleButtonClick(button) {
-      if (button === 'favorites') {
-        this.$emit('update-filter', { filter: 'favorites' })
-      }
-      if (button === 'recents') {
-        this.$emit('update-filter', { filter: 'recents' })
-      }
-      this.$emit('update:activeButton', button)
-    },
-    goToNewPage(page) {
-      this.$emit('go-to-new-page', page)
-    },
-    goToTariff() {
-      this.$emit('go-to-tariff')
-    },
-  },
-}
-</script>
-
 <template>
   <div class="home-panel-left">
     <div class="home-panel-data">
@@ -65,8 +12,8 @@ export default {
             :class="{ 'is-active': activeButton === 'all_files' }"
             @click="handleButtonClick('all_files')"
           >
-            <img :src="stackPanelHomeData.chevron_right" alt="chevron right" class="home-icon" />
-            <span>{{ stackPanelHomeData.all_files }}</span>
+            <img :src="icons.chevron_right" alt="chevron right" class="home-icon" />
+            <span>{{ labels.all_files }}</span>
           </button>
         </div>
         <div class="home-container-buttons">
@@ -76,8 +23,8 @@ export default {
             :class="{ 'is-active': activeButton === 'gallery' }"
             @click="handleButtonClick('gallery')"
           >
-            <img :src="stackPanelHomeData.image" alt="image" class="home-icon" />
-            <span>{{ stackPanelHomeData.gallery }}</span>
+            <img :src="icons.image" alt="gallery" class="home-icon" />
+            <span>{{ labels.gallery }}</span>
           </button>
         </div>
         <div class="home-container-buttons">
@@ -87,8 +34,8 @@ export default {
             :class="{ 'is-active': activeButton === 'favorites' }"
             @click="handleButtonClick('favorites')"
           >
-            <img :src="stackPanelHomeData.heart" alt="heart" class="home-icon" />
-            <span>{{ stackPanelHomeData.favorites }}</span>
+            <img :src="icons.heart" alt="favorites" class="home-icon" />
+            <span>{{ labels.favorites }}</span>
           </button>
         </div>
         <div class="home-container-buttons">
@@ -98,8 +45,8 @@ export default {
             :class="{ 'is-active': activeButton === 'recents' }"
             @click="handleButtonClick('recents')"
           >
-            <img :src="stackPanelHomeData.clock" alt="clock" class="home-icon" />
-            <span>{{ stackPanelHomeData.recents }}</span>
+            <img :src="icons.clock" alt="recents" class="home-icon" />
+            <span>{{ labels.recents }}</span>
           </button>
         </div>
         <div class="home-container-buttons">
@@ -109,12 +56,14 @@ export default {
             :class="{ 'is-active': activeButton === 'trash' }"
             @click="handleButtonClick('trash')"
           >
-            <img :src="stackPanelHomeData.trash_empty" alt="trash empty" class="home-icon" />
-            <span>{{ stackPanelHomeData.trash }}</span>
+            <img :src="icons.trash_empty" alt="trash" class="home-icon" />
+            <span>{{ labels.trash }}</span>
           </button>
         </div>
       </div>
+
       <div class="home-divider"></div>
+
       <div class="home-panel-user">
         <div class="home-container-buttons">
           <button
@@ -123,8 +72,8 @@ export default {
             :class="{ 'is-active': activeButton === 'account' }"
             @click="goToNewPage('Account')"
           >
-            <img :src="stackPanelHomeData.user_circle" alt="account" class="home-icon" />
-            <span>{{ stackPanelHomeData.account }}</span>
+            <img :src="icons.user_circle" alt="account" class="home-icon" />
+            <span>{{ labels.account }}</span>
           </button>
         </div>
         <div class="home-container-buttons">
@@ -134,8 +83,8 @@ export default {
             :class="{ 'is-active': activeButton === 'help' }"
             @click="goToNewPage('Help')"
           >
-            <img :src="stackPanelHomeData.headphones" alt="help" class="home-icon" />
-            <span>{{ stackPanelHomeData.help }}</span>
+            <img :src="icons.headphones" alt="help" class="home-icon" />
+            <span>{{ labels.help }}</span>
           </button>
         </div>
         <div class="home-container-buttons">
@@ -145,14 +94,69 @@ export default {
             :class="{ 'is-active': activeButton === 'tariff' }"
             @click="goToTariff"
           >
-            <img :src="stackPanelHomeData.data" alt="data" class="home-icon" />
-            <span>{{ stackPanelHomeData.tariff }}</span>
+            <img :src="icons.data" alt="tariff" class="home-icon" />
+            <span>{{ labels.tariff }}</span>
           </button>
         </div>
       </div>
+
       <div class="home-divider"></div>
     </div>
   </div>
 </template>
+
+<script setup>
+import { defineProps, defineEmits, reactive } from 'vue'
+import logo from '@/assets/logo/logo.svg'
+import chevron_right from '@/assets/elements/chevron_right.svg'
+import image from '@/assets/elements/image.svg'
+import heart from '@/assets/elements/heart.svg'
+import clock from '@/assets/elements/clock.svg'
+import trash_empty from '@/assets/elements/trash_empty.svg'
+import user_circle from '@/assets/elements/user_circle.svg'
+import headphones from '@/assets/elements/headphones.svg'
+import data from '@/assets/elements/data.svg'
+import { SIDE_PANEL_CONSTANTS } from '../scripts/constants'
+
+const props = defineProps({
+  activeButton: {
+    type: String,
+    required: true,
+  },
+})
+
+const emit = defineEmits(['update-filter', 'update:activeButton', 'go-to-new-page', 'go-to-tariff'])
+
+const icons = {
+  chevron_right,
+  image,
+  heart,
+  clock,
+  trash_empty,
+  user_circle,
+  headphones,
+  data,
+}
+
+const labels = SIDE_PANEL_CONSTANTS
+
+function handleButtonClick(button) {
+  if (button === 'favorites') {
+    emit('update-filter', { filter: 'favorites' })
+  }
+  if (button === 'recents') {
+    emit('update-filter', { filter: 'recents' })
+  }
+  emit('update:activeButton', button)
+}
+
+function goToNewPage(page) {
+  emit('go-to-new-page', page)
+}
+
+function goToTariff() {
+  emit('go-to-tariff')
+}
+</script>
 
 <style src="../styles/moduleHome.css" scoped></style>
