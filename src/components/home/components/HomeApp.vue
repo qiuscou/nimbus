@@ -47,7 +47,6 @@ const filteredFiles = computed(() => {
     let typeMatch = true
     let categoryMatch = true
 
-    // Фильтрация по категории
     if (activeButton.value === 'gallery') {
       typeMatch = galleryTypes.includes(file.type)
     } else if (activeButton.value === 'favorites') {

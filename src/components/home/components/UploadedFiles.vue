@@ -148,34 +148,19 @@ export default {
     },
     async downloadFile(index) {
       const file = this.uploadedFiles[index]
-      let blobSource
-
-      if (file.url) {
-        const res = await fetch(file.url, { credentials: 'include' })
-        if (!res.ok) {
-          console.error('Ошибка HTTP при скачивании:', res.status)
-          this.closeContextMenu()
-          return
-        }
-        blobSource = await res.blob()
-      } else if (file.raw || file.file) {
-        blobSource = file.raw || file.file
-      } else {
-        console.error('Нет ни url, ни объекта File для скачивания:', file)
-        this.closeContextMenu()
+      if (!file?.filename) {
+        console.error('Ошибка: файл не найден')
         return
       }
 
-      console.log('Тип blob:', blobSource.type, 'Размер:', blobSource.size)
-
-      const href = URL.createObjectURL(blobSource)
+      // Используйте прямой URL для скачивания через API
+      const downloadUrl = `http://localhost:3001/api/files/download/${encodeURIComponent(file.filename)}`
       const link = document.createElement('a')
-      link.href = href
+      link.href = downloadUrl
       link.download = file.name
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
-      URL.revokeObjectURL(href)
       this.closeContextMenu()
     },
     restoreFromTrash(index) {
