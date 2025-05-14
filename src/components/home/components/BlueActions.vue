@@ -1,33 +1,3 @@
-<template>
-  <div
-    class="home-blue-buttons-container"
-    :style="{
-      width: isFormatSelectorVisible
-        ? `calc(8.5rem + ${Math.max(...formats.map((f) => f.label.length)) * 1.035}rem)`
-        : '8.5rem',
-    }"
-    @dragover.prevent="handleDragOver"
-    @dragleave.prevent="handleDragLeave"
-    @drop.prevent="handleDrop"
-    :class="{ dragging: isDragging }"
-  >
-    <div class="home-blue-button" id="home-download-button" @click="openFileDialog">
-      <img :src="cloud_upload" alt="upload" class="home-icon" />
-    </div>
-    <input type="file" multiple @change="handleFileInput" style="display: none" />
-
-    <div class="home-blue-button" id="home-create-button" @click="handleCreateButtonClick">
-      <img :src="add_plus_circle" alt="create" class="home-icon" />
-    </div>
-
-    <select v-if="isFormatSelectorVisible" v-model="selectedFormat" class="format-selector">
-      <option v-for="format in formats" :key="format.value" :value="format.value">
-        {{ format.label }}
-      </option>
-    </select>
-  </div>
-</template>
-
 <script setup>
 import { ref } from 'vue'
 
@@ -122,5 +92,35 @@ async function handleFileInput(event) {
   await uploadToServer(files)
 }
 </script>
+
+<template>
+  <div
+    class="home-blue-buttons-container"
+    :style="{
+      width: isFormatSelectorVisible
+        ? `calc(8.5rem + ${Math.max(...formats.map((f) => f.label.length)) * 1.035}rem)`
+        : '8.5rem',
+    }"
+    @dragover.prevent="handleDragOver"
+    @dragleave.prevent="handleDragLeave"
+    @drop.prevent="handleDrop"
+    :class="{ dragging: isDragging }"
+  >
+    <div class="home-blue-button" id="home-download-button" @click="openFileDialog">
+      <img :src="cloud_upload" alt="upload" class="home-icon" />
+    </div>
+    <input type="file" multiple @change="handleFileInput" style="display: none" />
+
+    <div class="home-blue-button" id="home-create-button" @click="handleCreateButtonClick">
+      <img :src="add_plus_circle" alt="create" class="home-icon" />
+    </div>
+
+    <select v-if="isFormatSelectorVisible" v-model="selectedFormat" class="format-selector">
+      <option v-for="format in formats" :key="format.value" :value="format.value">
+        {{ format.label }}
+      </option>
+    </select>
+  </div>
+</template>
 
 <style src="../styles/moduleHome.css" scoped></style>

@@ -1,46 +1,3 @@
-<template>
-  <div class="home-wrapper">
-    <SidePanel
-      :activeButton="activeButton"
-      @update:activeButton="activeButton = $event"
-      @go-to-new-page="goToNewPage"
-      @go-to-tariff="goToTariff"
-    />
-
-    <div class="home-panel-right">
-      <SearchPanel
-        :selectedFileType="selectedFileType"
-        :searchQuery="searchQuery"
-        @update:selectedFileType="selectedFileType = $event"
-        @update:searchQuery="searchQuery = $event"
-      />
-
-      <FileUploader
-        :uploadedFiles="filteredFiles"
-        :isDragging="isDragging"
-        @file-selected="handleFileSelection"
-        @drag-over="handleDragOver"
-        @drag-leave="handleDragLeave"
-        @empty-area-drop="handleDrop"
-        @file-drag-start="handleFileDragStart"
-        @file-drag-over="handleFileDragOver"
-        @file-drag-leave="handleFileDragLeave"
-        @file-drop="handleFileDrop"
-        @open-file-dialog="onOpenFileDialog"
-        @update-files="onFilesUpdate"
-      />
-    </div>
-
-    <input
-      type="file"
-      ref="fileInput"
-      style="display: none"
-      @change="handleFileSelection"
-      multiple
-    />
-  </div>
-</template>
-
 <script setup>
 import { ref, computed, watch } from 'vue'
 import SidePanel from './SidePanel.vue'
@@ -58,7 +15,6 @@ const { isHomePage, goToNewPage, goToTariff, openFileDialog } = useNavigation()
 
 const { uploadedFiles, loadFilesFromServer, uploadToServer } = useFileUpload()
 
-// Drag & Drop
 const {
   isDragging,
   handleDragOver,
@@ -117,5 +73,48 @@ function onFilesUpdate(files) {
   uploadedFiles.value = files
 }
 </script>
+
+<template>
+  <div class="home-wrapper">
+    <SidePanel
+      :activeButton="activeButton"
+      @update:activeButton="activeButton = $event"
+      @go-to-new-page="goToNewPage"
+      @go-to-tariff="goToTariff"
+    />
+
+    <div class="home-panel-right">
+      <SearchPanel
+        :selectedFileType="selectedFileType"
+        :searchQuery="searchQuery"
+        @update:selectedFileType="selectedFileType = $event"
+        @update:searchQuery="searchQuery = $event"
+      />
+
+      <FileUploader
+        :uploadedFiles="filteredFiles"
+        :isDragging="isDragging"
+        @file-selected="handleFileSelection"
+        @drag-over="handleDragOver"
+        @drag-leave="handleDragLeave"
+        @empty-area-drop="handleDrop"
+        @file-drag-start="handleFileDragStart"
+        @file-drag-over="handleFileDragOver"
+        @file-drag-leave="handleFileDragLeave"
+        @file-drop="handleFileDrop"
+        @open-file-dialog="onOpenFileDialog"
+        @update-files="onFilesUpdate"
+      />
+    </div>
+
+    <input
+      type="file"
+      ref="fileInput"
+      style="display: none"
+      @change="handleFileSelection"
+      multiple
+    />
+  </div>
+</template>
 
 <style src="../styles/moduleHome.css" scoped></style>

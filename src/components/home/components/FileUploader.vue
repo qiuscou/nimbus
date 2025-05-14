@@ -1,28 +1,3 @@
-<template>
-  <div
-    class="home-panel-storage"
-    :class="{ dragover: isDragging }"
-    @dragover.prevent="onDragOver"
-    @dragleave.prevent="onDragLeave"
-    @drop.prevent="onEmptyAreaDrop"
-  >
-    <BlueActions @open-file-dialog="onOpenFileDialog" />
-
-    <UploadedFiles
-      :uploadedFiles="uploadedFiles"
-      @update-files="onUpdateFiles"
-      @file-selected="onFileSelected"
-      @drag-over="onDragOver"
-      @drag-leave="onDragLeave"
-      @empty-area-drop="onEmptyAreaDrop"
-      @file-drag-start="onFileDragStart"
-      @file-drag-over="onFileDragOver"
-      @file-drag-leave="onFileDragLeave"
-      @file-drop="onFileDrop"
-    />
-  </div>
-</template>
-
 <script setup>
 import BlueActions from './BlueActions.vue'
 import UploadedFiles from './UploadedFiles.vue'
@@ -82,5 +57,30 @@ function onFileDrop(event) {
   emit('file-drop', event)
 }
 </script>
+
+<template>
+  <div
+    class="home-panel-storage"
+    :class="{ dragover: isDragging }"
+    @dragover.prevent="onDragOver"
+    @dragleave.prevent="onDragLeave"
+    @drop.prevent="onEmptyAreaDrop"
+  >
+    <BlueActions @open-file-dialog="onOpenFileDialog" />
+
+    <UploadedFiles
+      :uploadedFiles="uploadedFiles"
+      @update-files="onUpdateFiles"
+      @file-selected="onFileSelected"
+      @drag-over="onDragOver"
+      @drag-leave="onDragLeave"
+      @empty-area-drop="onEmptyAreaDrop"
+      @file-drag-start="onFileDragStart"
+      @file-drag-over="onFileDragOver"
+      @file-drag-leave="onFileDragLeave"
+      @file-drop="onFileDrop"
+    />
+  </div>
+</template>
 
 <style src="../styles/moduleHome.css" scoped></style>
