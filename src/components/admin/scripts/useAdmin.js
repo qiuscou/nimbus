@@ -1,6 +1,14 @@
 import { ref, reactive, computed } from 'vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { getFirestore, collection, getDocs, doc, getDoc } from 'firebase/firestore'
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+} from 'firebase/firestore'
 import * as XLSX from 'xlsx'
 
 export function useAdmin() {
@@ -32,9 +40,7 @@ export function useAdmin() {
     return filteredUsers.value.slice(start, end)
   })
 
-  const totalPages = computed(() => {
-    return Math.ceil(filteredUsers.value.length / itemsPerPage.value)
-  })
+  const totalPages = computed(() => Math.ceil(filteredUsers.value.length / itemsPerPage.value))
 
   const checkAuthStatus = () => {
     onAuthStateChanged(auth, (user) => {
@@ -66,23 +72,21 @@ export function useAdmin() {
     try {
       loading.value = true
       error.value = null
-      const usersCollection = collection(db, 'users')
-      const snapshot = await getDocs(usersCollection)
+      const snapshot = await getDocs(collection(db, 'users'))
 
-      const userList = []
-      snapshot.forEach((doc) => {
-        userList.push({
-          uid: doc.id,
-          ...doc.data(),
+      const list = []
+      snapshot.forEach((d) => {
+        list.push({
+          uid: d.id,
+          ...d.data(),
         })
       })
 
-      users.value = userList
-      filteredUsers.value = userList
-      console.log('Загружено пользователей:', userList.length)
+      users.value = list
+      filteredUsers.value = list
     } catch (err) {
-      console.error('Ошибка при загрузке пользователей:', err)
       error.value = 'Не удалось загрузить пользователей'
+      console.error(err)
     } finally {
       loading.value = false
     }
@@ -90,27 +94,16 @@ export function useAdmin() {
 
   const applyFilters = () => {
     filteredUsers.value = users.value.filter((user) => {
-      const matchesSurname =
-        !filters.surname ||
-        (user.surname || '').toLowerCase().includes(filters.surname.toLowerCase())
-      const matchesName =
-        !filters.name || (user.name || '').toLowerCase().includes(filters.name.toLowerCase())
-      const matchesPatronymic =
-        !filters.patronymic ||
-        (user.patronymic || '').toLowerCase().includes(filters.patronymic.toLowerCase())
-      const matchesGender =
-        !filters.gender || (user.gender || '').toLowerCase() === filters.gender.toLowerCase()
-      const matchesDateOfBirth = !filters.dateOfBirth || user.dateOfBirth === filters.dateOfBirth
-      const matchesCountry =
-        !filters.country ||
-        (user.country || '').toLowerCase().includes(filters.country.toLowerCase())
+      const matches = (field, val) =>
+        !val || (user[field] || '').toLowerCase().includes(val.toLowerCase())
+
       return (
-        matchesSurname &&
-        matchesName &&
-        matchesPatronymic &&
-        matchesGender &&
-        matchesDateOfBirth &&
-        matchesCountry
+        matches('surname', filters.surname) &&
+        matches('name', filters.name) &&
+        matches('patronymic', filters.patronymic) &&
+        (!filters.gender || user.gender === filters.gender) &&
+        (!filters.dateOfBirth || user.dateOfBirth === filters.dateOfBirth) &&
+        matches('country', filters.country)
       )
     })
   }
@@ -119,46 +112,71 @@ export function useAdmin() {
     loading.value = true
     error.value = null
     success.value = null
-
     try {
-      const exportData = filteredUsers.value.map((user) => ({
-        UID: user.uid || 'Не указано',
-        Email: user.email || 'Не указано',
-        Номер: user.phone || 'Не указано',
-        Фамилия: user.surname || 'Не указано',
-        Имя: user.name || 'Не указано',
-        Отчество: user.patronymic || 'Не указано',
-        Пол: user.gender || 'Не указано',
-        'Дата рождения': user.dateOfBirth || 'Не указано',
-        Пароль: user.password || 'Не указано',
-        Страна: user.country || 'Не указано',
+      const data = filteredUsers.value.map((u) => ({
+        UID: u.uid,
+        Email: u.email,
+        Фамилия: u.surname,
+        Имя: u.name,
+        Отчество: u.patronymic,
+        Пол: u.gender,
+        'Дата рождения': u.dateOfBirth,
+        Страна: u.country,
       }))
-
-      const ws = XLSX.utils.json_to_sheet(exportData)
+      const ws = XLSX.utils.json_to_sheet(data)
       const wb = XLSX.utils.book_new()
       XLSX.utils.book_append_sheet(wb, ws, 'Пользователи')
+      XLSX.writeFile(wb, `users_export_${new Date().toISOString().slice(0, 10)}.xlsx`)
+      success.value = `Успешно экспортировано ${data.length} пользователей`
+    } catch (e) {
+      error.value = 'Ошибка при экспорте: ' + e.message
+      console.error(e)
+    } finally {
+      loading.value = false
+    }
+  }
 
-      XLSX.writeFile(wb, `users_export_${new Date().toISOString().split('T')[0]}.xlsx`)
+  const updateUser = async (user) => {
+    try {
+      loading.value = true
+      const refDoc = doc(db, 'users', user.uid)
+      await updateDoc(refDoc, {
+        surname: user.surname,
+        name: user.name,
+        patronymic: user.patronymic,
+        gender: user.gender,
+        dateOfBirth: user.dateOfBirth,
+        country: user.country,
+      })
+      success.value = 'Пользователь обновлён'
+      await fetchUsers()
+    } catch (e) {
+      error.value = 'Ошибка при обновлении: ' + e.message
+      console.error(e)
+    } finally {
+      loading.value = false
+    }
+  }
 
-      success.value = `Успешно экспортировано ${filteredUsers.value.length} пользователей`
-    } catch (err) {
-      console.error('Ошибка при экспорте пользователей:', err)
-      error.value = 'Произошла ошибка при экспорте: ' + err.message
+  const deleteUser = async (uid) => {
+    try {
+      loading.value = true
+      await deleteDoc(doc(db, 'users', uid))
+      success.value = 'Пользователь удалён'
+      await fetchUsers()
+    } catch (e) {
+      error.value = 'Ошибка при удалении: ' + e.message
+      console.error(e)
     } finally {
       loading.value = false
     }
   }
 
   const nextPage = () => {
-    if (currentPage.value < Math.ceil(filteredUsers.value.length / itemsPerPage.value)) {
-      currentPage.value++
-    }
+    if (currentPage.value < totalPages.value) currentPage.value++
   }
-
   const prevPage = () => {
-    if (currentPage.value > 1) {
-      currentPage.value--
-    }
+    if (currentPage.value > 1) currentPage.value--
   }
 
   return {
@@ -173,10 +191,11 @@ export function useAdmin() {
     error,
     success,
     checkAuthStatus,
-    fetchUserName,
     fetchUsers,
     applyFilters,
     exportUsersToExcel,
+    updateUser,
+    deleteUser,
     nextPage,
     prevPage,
     totalPages,
